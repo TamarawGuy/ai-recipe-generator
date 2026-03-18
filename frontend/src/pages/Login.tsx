@@ -4,20 +4,21 @@ import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 import { ChefHat, Mail, Lock } from 'lucide-react'
 import InputField from './components/InputField'
+import Logo from './components/Logo'
 
-const Logo = () => {
-    return (
-        <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500 rounded-2xl mb-4">
-                <ChefHat className="w-9 h-9 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-            <p className="text-gray-600 mt-2">
-                Sign in to continue to AI Recipe Generator
-            </p>
-        </div>
-    )
-}
+// const Logo = () => {
+//     return (
+//         <div className="text-center mb-8">
+//             <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500 rounded-2xl mb-4">
+//                 <ChefHat className="w-9 h-9 text-white" />
+//             </div>
+//             <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+//             <p className="text-gray-600 mt-2">
+//                 Sign in to continue to AI Recipe Generator
+//             </p>
+//         </div>
+//     )
+// }
 
 const Login = () => {
     const navigate = useNavigate()
@@ -46,7 +47,10 @@ const Login = () => {
         <div className="min-h-screen bg-linear-to-br from-emerald-50 to-white flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 {/* Logo */}
-                <Logo />
+                <Logo
+                    title="Welcome Back!"
+                    description="Sign in to continue to AI Recipe Generator"
+                />
 
                 {/* Login Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
