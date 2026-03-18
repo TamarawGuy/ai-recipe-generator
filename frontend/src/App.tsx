@@ -8,8 +8,8 @@ import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext'
 
 // Pages
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
+import Login from './pages/login/Login'
+import SignUp from './pages/sign-up/SignUp'
 
 function App() {
     return (

@@ -2,9 +2,9 @@ import { useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, User } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { useAuth } from '../context/AuthContext'
-import Logo from './components/Logo'
-import InputField from './components/InputField'
+import { useAuth } from '../../context/AuthContext'
+import Logo from '../shared/Logo'
+import InputField from '../../ui/InputField'
 
 const SignUp = () => {
     const { register } = useAuth()

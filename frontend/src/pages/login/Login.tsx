@@ -1,10 +1,10 @@
 import { useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
 import { ChefHat, Mail, Lock } from 'lucide-react'
-import InputField from './components/InputField'
-import Logo from './components/Logo'
+import InputField from '../../ui/InputField'
+import Logo from '../shared/Logo'
 
 // const Logo = () => {
 //     return (
