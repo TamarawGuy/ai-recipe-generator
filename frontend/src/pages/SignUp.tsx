@@ -81,15 +81,18 @@ const SignUp = () => {
                             type="submit"
                             disabled={loading}
                         >
-                            Already have an account?{' '}
-                            <Link
-                                to="/login"
-                                className="text-emerald-600 hover:text-emerald-700 font-medium"
-                            >
-                                Sign In
-                            </Link>
+                            {loading ? 'Creating account...' : 'Create Account'}
                         </button>
                     </form>
+                    <p className="text-center text-sm text-gray-600 mt-6">
+                        Already have an account?{' '}
+                        <Link
+                            to="/login"
+                            className="text-emerald-600 hover:text-emerald-700 font-medium"
+                        >
+                            Sign In
+                        </Link>
+                    </p>
                 </div>
             </div>
         </div>
