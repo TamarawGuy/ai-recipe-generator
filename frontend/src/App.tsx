@@ -10,6 +10,7 @@ import { AuthProvider } from './context/AuthContext'
 // Pages
 import Login from './pages/login/Login'
 import SignUp from './pages/sign-up/SignUp'
+import Dashboard from './pages/dashboard/Dashboard'
 
 function App() {
     return (
@@ -19,6 +20,9 @@ function App() {
                     {/* Public */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
+
+                    {/* Protected Routes */}
+                    <Route path="/dashboard" element={<Dashboard />} />
 
                     {/* Default redirect */}
                     <Route

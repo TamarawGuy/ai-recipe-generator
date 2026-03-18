@@ -5,7 +5,7 @@ import {
     useEffect,
     type ReactNode,
 } from 'react'
-import { dummyUser, type DummyUser } from '../../data/dummyData'
+import { dummyUser, type DummyUser } from '../data/dummyData'
 
 type AuthContextProps = {
     user: DummyUser | null

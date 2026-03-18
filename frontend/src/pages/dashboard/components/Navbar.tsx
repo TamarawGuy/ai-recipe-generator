@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../../../context/AuthContext'
 import {
     ChefHat,
     Home,
@@ -12,7 +12,7 @@ import {
 type NavLinkProps = {
     to: string
     label: string
-    icon: Icon
+    icon: React.ReactNode
 }
 
 const NavLink = ({ to, label, icon }: NavLinkProps) => {
