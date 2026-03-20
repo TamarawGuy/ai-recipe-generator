@@ -13,6 +13,7 @@ import SignUp from './pages/sign-up/SignUp'
 import Dashboard from './pages/dashboard/Dashboard'
 import RecipeDetails from './pages/recipe-details/RecipeDetails'
 import MyRecipes from './pages/my-recipes/MyRecipes'
+import Settings from './pages/settings/Settings'
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/recipes" element={<MyRecipes />} />
                     <Route path="/recipes/:id" element={<RecipeDetails />} />
+                    <Route path="/settings" element={<Settings />} />
 
                     {/* Default redirect */}
                     <Route
