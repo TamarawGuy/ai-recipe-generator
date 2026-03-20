@@ -14,6 +14,7 @@ import Dashboard from './pages/dashboard/Dashboard'
 import RecipeDetails from './pages/recipe-details/RecipeDetails'
 import MyRecipes from './pages/my-recipes/MyRecipes'
 import Settings from './pages/settings/Settings'
+import MealPlanner from './pages/meal-planner/MealPlanner'
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/recipes" element={<MyRecipes />} />
                     <Route path="/recipes/:id" element={<RecipeDetails />} />
+                    <Route path="/meal-plan" element={<MealPlanner />} />
                     <Route path="/settings" element={<Settings />} />
 
                     {/* Default redirect */}
