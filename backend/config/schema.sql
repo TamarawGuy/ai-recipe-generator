@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 -- User Preferences table
 CREATE TABLE IF NOT EXISTS user_preferences (
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS user_preferences (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(user_id)
-)
+);
 
 -- Pantry Items table
 CREATE TABLE IF NOT EXISTS pantry_items (
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS pantry_items (
     is_running_low BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 -- Recipes table
 CREATE TABLE IF NOT EXISTS recipes (
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS recipes (
     image_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 -- Recipe Ingredients Table
 CREATE TABLE IF NOT EXISTS recipe_ingredients (
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS recipe_ingredients (
     quantity DECIMAL(10, 2) NOT NULL,
     unit VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 -- Nutrition table
 CREATE TABLE IF NOT EXISTS recipe_nutrition (
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS recipe_nutrition (
     fiber DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(recipe_id)
-)
+);
 
 -- Meal Plans table
 CREATE TABLE IF NOT EXISTS meal_plans (
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS meal_plans (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(user_id, meal_date, meal_type)
-)
+);
 
 -- Shopping List table
 CREATE TABLE IF NOT EXISTS shopping_list_items (
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS shopping_list_items (
     from_meal_plan BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_pantry_user_id ON pantry_items(user_id);
