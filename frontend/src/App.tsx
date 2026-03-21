@@ -16,6 +16,7 @@ import MyRecipes from './pages/my-recipes/MyRecipes'
 import Settings from './pages/settings/Settings'
 import MealPlanner from './pages/meal-planner/MealPlanner'
 import Pantry from './pages/pantry/Pantry'
+import RecipeGenerator from './pages/recipe-generator/RecipeGenerator'
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/recipes" element={<MyRecipes />} />
                     <Route path="/recipes/:id" element={<RecipeDetails />} />
+                    <Route path="/generate" element={<RecipeGenerator />} />
                     <Route path="/meal-plan" element={<MealPlanner />} />
                     <Route path="/pantry" element={<Pantry />} />
                     <Route path="/settings" element={<Settings />} />
