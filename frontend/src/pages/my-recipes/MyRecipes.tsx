@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Search, Clock, ChefHat, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { dummyRecipes } from '../../data/dummyData'
-import Navbar from '../dashboard/components/Navbar'
+import Navbar from '../shared/Navbar'
 
 import RecipeCard from './components/RecipeCard'
 

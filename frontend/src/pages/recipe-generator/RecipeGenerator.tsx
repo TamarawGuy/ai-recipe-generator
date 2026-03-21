@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ChefHat, Sparkles, Plus, X, Clock, Users } from 'lucide-react'
-import Navbar from '../dashboard/components/Navbar'
+import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
 import { dummyPreferences, dummyGeneratedRecipe } from '../../data/dummyData'
 

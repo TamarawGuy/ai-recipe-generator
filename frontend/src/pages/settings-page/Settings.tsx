@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { User, Lock, Trash2, Save } from 'lucide-react'
-import Navbar from '../dashboard/components/Navbar'
+import Navbar from '../shared/Navbar'
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChefHat, UtensilsCrossed, Calendar, Clock } from 'lucide-react'
 
-import Navbar from './components/Navbar'
+import Navbar from '../shared/Navbar'
 import StatCard from './components/StatCard'
 import Header from './components/Header'
 import {

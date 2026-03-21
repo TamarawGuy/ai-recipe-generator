@@ -13,10 +13,11 @@ import SignUp from './pages/sign-up/SignUp'
 import Dashboard from './pages/dashboard/Dashboard'
 import RecipeDetails from './pages/recipe-details/RecipeDetails'
 import MyRecipes from './pages/my-recipes/MyRecipes'
-import Settings from './pages/settings/Settings'
+import Settings from './pages/settings-page/Settings'
 import MealPlanner from './pages/meal-planner/MealPlanner'
 import Pantry from './pages/pantry/Pantry'
 import RecipeGenerator from './pages/recipe-generator/RecipeGenerator'
+import ShoppingList from './pages/shopping-list/ShoppingList'
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/generate" element={<RecipeGenerator />} />
                     <Route path="/meal-plan" element={<MealPlanner />} />
                     <Route path="/pantry" element={<Pantry />} />
+                    <Route path="/shopping-list" element={<ShoppingList />} />
                     <Route path="/settings" element={<Settings />} />
 
                     {/* Default redirect */}

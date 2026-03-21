@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus, Search, X, Calendar, AlertCircle } from 'lucide-react'
-import Navbar from '../dashboard/components/Navbar'
+import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import { dummyPantryItems, getExpiringItems } from '../../data/dummyData'

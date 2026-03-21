@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Calendar as CalendarIcon, Plus, X, ChefHat } from 'lucide-react'
-import Navbar from '../dashboard/components/Navbar'
+import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
 import { format, startOfWeek, addDays } from 'date-fns'
 import { dummyMealPlans, dummyRecipes } from '../../data/dummyData'

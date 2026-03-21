@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Clock, Users, ArrowLeft, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import Navbar from '../dashboard/components/Navbar'
+import Navbar from '../shared/Navbar'
 import { getRecipeById } from '../../data/dummyData'
 
 const NutritionCard = ({
