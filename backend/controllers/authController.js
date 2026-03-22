@@ -50,7 +50,7 @@ export const register = async (req, res, next) => {
         })
 
         // Generate token
-        const token = generateToken()
+        const token = generateToken(user)
 
         res.status(201).json({
             success: true,
@@ -86,6 +86,8 @@ export const login = async (req, res, next) => {
 
         // Find user
         const user = await User.findByEmail(email)
+
+        console.log('User >>>> ', user)
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -106,7 +108,7 @@ export const login = async (req, res, next) => {
         }
 
         // Generate token
-        const token = generateToken()
+        const token = generateToken(user)
 
         res.json({
             success: true,

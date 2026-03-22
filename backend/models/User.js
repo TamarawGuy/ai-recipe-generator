@@ -20,7 +20,7 @@ class User {
     static async findByEmail(email) {
         const result = await db.query(
             `
-                SELECT id, email, name, created_at, updated_at FROM users WHERE email = $1
+                SELECT * FROM users WHERE email = $1
             `,
             [email],
         )
@@ -35,6 +35,8 @@ class User {
             `,
             [id],
         )
+
+        return result.rows[0]
     }
 
     static async update(id, updates) {
