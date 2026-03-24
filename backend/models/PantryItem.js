@@ -18,7 +18,7 @@ class PantryItem {
             `
                 INSERT INTO pantry_items
                 (user_id, name, quantity, unit, category, expiry_date, is_running_low)
-                VALUES ($1, $2, $3, $4, $5, $6)
+                VALUES ($1, $2, $3, $4, $5, $6, $7)
                 RETURNING *
             `,
             [
@@ -64,7 +64,7 @@ class PantryItem {
         query += ' ORDER BY created_at DESC'
 
         const result = await db.query(query, params)
-        return result.rows[0]
+        return result.rows
     }
 
     /**
@@ -83,7 +83,7 @@ class PantryItem {
             [userId],
         )
 
-        return result.rows[0]
+        return result.rows
     }
 
     /**
@@ -114,7 +114,7 @@ class PantryItem {
                 SET name = COALESCE($1, name),
                     quantity = COALESCE($2, quantity),
                     unit = COALESCE($3, unit),
-                    category = COALESCE($4, cateogory),
+                    category = COALESCE($4, category),
                     expiry_date = COALESCE($5, expiry_date),
                     is_running_low = COALESCE($6, is_running_low)
                 WHERE id = $7 AND user_id = $8
@@ -142,6 +142,7 @@ class PantryItem {
         const result = await db.query(
             `
                 DELETE FROM pantry_items WHERE id = $1 AND user_id = $2
+                RETUNING *
             `,
             [id, userId],
         )
@@ -161,7 +162,7 @@ class PantryItem {
                 COUNT(*) FILTER (WHERE is_running_low = true) as running_low_count,
                 COUNT(*) FILTER (WHERE expiry_date < CURRENT_DATE + INTERVAL '7 days' AND expiry_date >= CURRENT_DATE) as expiring_soon_count
                 FROM pantry_items
-                WHERE user_id = $1,
+                WHERE user_id = $1
             `,
             [userId],
         )

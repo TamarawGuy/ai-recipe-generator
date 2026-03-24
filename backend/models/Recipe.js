@@ -57,7 +57,7 @@ class Recipe {
                 const ingredientsValues = ingredients
                     .map(
                         (ing, idx) =>
-                            `($1, $${idx * 3 + 2}), $${idx * 3 + 3}, $${idx * 3 + 4})`,
+                            `($1, $${idx * 3 + 2}, $${idx * 3 + 3}, $${idx * 3 + 4})`,
                     )
                     .join(', ')
 
@@ -216,7 +216,7 @@ class Recipe {
      * Get recent recipes
      */
     static async getRecent(userId, limit = 5) {
-        const result = await query.db(
+        const result = await db.query(
             `
                 SELECT r.*, rn.calories
                 FROM recipes r
@@ -256,7 +256,7 @@ class Recipe {
                     cuisine_type = COALESCE($3, cuisine_type),
                     difficulty = COALESCE($4, difficulty),
                     prep_time = COALESCE($5, prep_time),
-                    cook_time = COLEASCE($6, cook_time),
+                    cook_time = COALESCE($6, cook_time),
                     servings = COALESCE($7, servings),
                     instructions = COALESCE($8, instructions),
                     dietary_tags = COALESCE($9, dietary_tags),
@@ -292,6 +292,7 @@ class Recipe {
         const result = await db.query(
             `
                 DELETE FROM recipes WHERE id = $1 AND user_id = $2
+                RETURNING *
             `,
             [id, userId],
         )
