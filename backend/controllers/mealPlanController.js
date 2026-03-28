@@ -34,7 +34,7 @@ export const getWeeklyMealPlan = async (req, res, next) => {
 
         const mealPlans = await MealPlan.getWeeklyPlan(req.user.id, startDate)
         res.json({
-            success: false,
+            success: true,
             data: { mealPlans },
         })
     } catch (err) {
@@ -68,7 +68,7 @@ export const deleteMealPlan = async (req, res, next) => {
         const mealPlan = await MealPlan.delete(id, req.user.id)
 
         if (!mealPlan) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: 'Meal plan not found',
             })
