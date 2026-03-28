@@ -1,4 +1,4 @@
-import MealPlan from '../models/MealPlan'
+import MealPlan from '../models/MealPlan.js'
 
 /**
  * Add recipe to meal plan

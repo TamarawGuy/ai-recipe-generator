@@ -1,6 +1,6 @@
 import express from 'express'
 import * as mealPlanController from '../controllers/mealPlanController.js'
-import authMiddleware from '../middleware/auth'
+import authMiddleware from '../middleware/auth.js'
 
 const router = express.Router()
 

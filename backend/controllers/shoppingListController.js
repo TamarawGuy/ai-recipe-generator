@@ -1,4 +1,4 @@
-import ShoppingList from '../models/ShoppingList'
+import ShoppingList from '../models/ShoppingList.js'
 
 /**
  * Generate shopping list from meal plan
