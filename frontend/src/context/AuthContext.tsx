@@ -5,7 +5,7 @@ import {
     useEffect,
     type ReactNode,
 } from 'react'
-import { dummyUser, type DummyUser } from '../data/dummyData'
+import { type DummyUser } from '../data/dummyData'
 import api from '../services/api'
 
 type AuthContextProps = {
@@ -37,6 +37,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<DummyUser | null>(null)
     const [loading, setLoading] = useState(false)
 
+    useEffect(() => {
+        // check if token exists
+        const token = localStorage.getItem('token')
+        const savedUser = localStorage.getItem('user')
+
+        if (token && savedUser) {
+            setUser(JSON.parse(savedUser))
+        }
+        setLoading(false)
+    }, [])
+
     const login = async (email: string, password: string) => {
         try {
             const resp = await api.post('/auth/login', { email, password })
@@ -44,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             localStorage.setItem('token', token)
             localStorage.setItem('user', JSON.stringify(user))
+            setUser(user)
 
             return { success: true }
         } catch (err) {
@@ -65,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             localStorage.setItem('token', token)
             localStorage.setItem('user', JSON.stringify(user))
+            setUser(user)
 
             return { success: true }
         } catch (err) {
@@ -89,17 +102,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout,
         isAuthenticated: !!user,
     }
-
-    useEffect(() => {
-        // check if token exists
-        const token = localStorage.getItem('token')
-        const savedUser = localStorage.getItem('user')
-
-        if (token && savedUser) {
-            setUser(JSON.parse(savedUser))
-        }
-        setLoading(false)
-    }, [])
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
