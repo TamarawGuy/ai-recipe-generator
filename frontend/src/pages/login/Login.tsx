@@ -2,23 +2,9 @@ import { useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
-import { ChefHat, Mail, Lock } from 'lucide-react'
+import { Mail, Lock } from 'lucide-react'
 import InputField from '../../ui/InputField'
 import Logo from '../shared/Logo'
-
-// const Logo = () => {
-//     return (
-//         <div className="text-center mb-8">
-//             <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500 rounded-2xl mb-4">
-//                 <ChefHat className="w-9 h-9 text-white" />
-//             </div>
-//             <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-//             <p className="text-gray-600 mt-2">
-//                 Sign in to continue to AI Recipe Generator
-//             </p>
-//         </div>
-//     )
-// }
 
 const Login = () => {
     const navigate = useNavigate()
