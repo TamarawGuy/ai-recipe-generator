@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext'
+import ProtectedRoute from './ui/ProtectedRoute'
 
 // Pages
 import Login from './pages/login/Login'
@@ -29,14 +30,70 @@ function App() {
                     <Route path="/signup" element={<SignUp />} />
 
                     {/* Protected Routes */}
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/recipes" element={<MyRecipes />} />
-                    <Route path="/recipes/:id" element={<RecipeDetails />} />
-                    <Route path="/generate" element={<RecipeGenerator />} />
-                    <Route path="/meal-plan" element={<MealPlanner />} />
-                    <Route path="/pantry" element={<Pantry />} />
-                    <Route path="/shopping-list" element={<ShoppingList />} />
-                    <Route path="/settings" element={<Settings />} />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/recipes"
+                        element={
+                            <ProtectedRoute>
+                                <MyRecipes />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/recipes/:id"
+                        element={
+                            <ProtectedRoute>
+                                <RecipeDetails />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/generate"
+                        element={
+                            <ProtectedRoute>
+                                <RecipeGenerator />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/meal-plan"
+                        element={
+                            <ProtectedRoute>
+                                <MealPlanner />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/pantry"
+                        element={
+                            <ProtectedRoute>
+                                <Pantry />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/shopping-list"
+                        element={
+                            <ProtectedRoute>
+                                <ShoppingList />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/settings"
+                        element={
+                            <ProtectedRoute>
+                                <Settings />
+                            </ProtectedRoute>
+                        }
+                    />
 
                     {/* Default redirect */}
                     <Route
