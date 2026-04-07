@@ -1,11 +1,24 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Clock, ChefHat, Trash2 } from 'lucide-react'
+import { Search, ChefHat } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { dummyRecipes } from '../../data/dummyData'
 import Navbar from '../shared/Navbar'
-
 import RecipeCard from './components/RecipeCard'
+import api from '../../services/api'
+
+const cuisines = [
+    'All',
+    'Italian',
+    'Mexican',
+    'Indian',
+    'Chinese',
+    'Japanese',
+    'Thai',
+    'French',
+    'Mediterranean',
+    'American',
+]
+const difficulties = ['All', 'easy', 'medium', 'hard']
 
 const MyRecipes = () => {
     const [recipes, setRecipes] = useState([])
@@ -13,20 +26,18 @@ const MyRecipes = () => {
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedCuisine, setSelectedCuisine] = useState('All')
     const [selectedDifficulty, setSelectedDifficulty] = useState('All')
+    const [loading, setLoading] = useState(false)
 
-    const cuisines = [
-        'All',
-        'Italian',
-        'Mexican',
-        'Indian',
-        'Chinese',
-        'Japanese',
-        'Thai',
-        'French',
-        'Mediterranean',
-        'American',
-    ]
-    const difficulties = ['All', 'easy', 'medium', 'hard']
+    const fetchRecipes = async () => {
+        try {
+            const resp = await api.get('/recipes')
+            setRecipes(resp.data.data.recipes)
+        } catch (err) {
+            console.error('Failed to load recipes: ', err)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const filterRecipes = () => {
         let filtered = recipes
@@ -58,22 +69,36 @@ const MyRecipes = () => {
         setFilteredRecipes(filtered)
     }
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this recipe?')) return
 
-        // UI-only delete
-        setRecipes(recipes.filter((recipe) => recipe.id !== id))
-        toast.success('Recipe deleted')
+        try {
+            await api.delete(`/recipes/${id}`)
+            setRecipes(recipes.filter((recipe) => recipe.id !== id))
+            toast.success('Recipe deleted')
+        } catch (err) {
+            toast.error('Failed to delete recipe: ', err)
+        }
     }
 
     useEffect(() => {
-        // Load dummy recipes
-        setRecipes(dummyRecipes)
+        fetchRecipes()
     }, [])
 
     useEffect(() => {
         filterRecipes()
     }, [recipes, searchQuery, selectedCuisine, selectedDifficulty])
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-500">
+                <Navbar />
+                <div className="flex items-center justify-center h-96">
+                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">

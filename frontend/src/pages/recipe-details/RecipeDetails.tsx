@@ -4,6 +4,7 @@ import { Clock, Users, ArrowLeft, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Navbar from '../shared/Navbar'
 import { getRecipeById } from '../../data/dummyData'
+import api from '../../services/api'
 
 const NutritionCard = ({
     label,
@@ -29,23 +30,31 @@ const RecipeDetails = () => {
     const [recipe, setRecipe] = useState(null)
     const [servings, setServings] = useState(4)
     const [checkedIngredients, setCheckedIngredients] = useState(new Set())
+    const [loading, setLoading] = useState(true)
 
-    const loadRecipe = useCallback(() => {
-        const recipeData = getRecipeById(id)
-        if (recipeData) {
+    const fetchRecipe = async () => {
+        try {
+            const resp = await api.get(`/recipes/${id}`)
+            const recipeData = resp.data.data.recipe
             setRecipe(recipeData)
             setServings(recipeData.servings || 4)
-        } else {
-            toast.error('Recipe not found')
-            navigate('/recipes')
+        } catch (err) {
+            console.error('Failed to load recipe: ', err)
+        } finally {
+            setLoading(false)
         }
-    }, [id, navigate])
+    }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (!confirm('Are you sure you want to delete this recipe?')) return
 
-        toast.success('Recipe deleted')
-        navigate('/recipes')
+        try {
+            await api.delete(`/recipes/${id}`)
+            toast.success('Recipe deleted')
+            navigate('/recipes')
+        } catch (err) {
+            toast.error('Failed to delete recipe: ', err)
+        }
     }
 
     const toggleIngredient = (index: number) => {
@@ -66,8 +75,8 @@ const RecipeDetails = () => {
     }
 
     useEffect(() => {
-        loadRecipe()
-    }, [loadRecipe])
+        fetchRecipe()
+    }, [id])
 
     if (!recipe) {
         return null
@@ -75,6 +84,17 @@ const RecipeDetails = () => {
 
     const totalTime = (recipe.prep_time || 0) + (recipe.cook_time || 0)
     const originalServings = recipe.servings || 4
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-500">
+                <Navbar />
+                <div className="flex items-center justify-center h-96">
+                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
