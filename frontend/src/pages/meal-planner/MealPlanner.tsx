@@ -51,6 +51,7 @@ const MealPlanner = () => {
 
             setMealPlan(organized)
         } catch {
+            console.error('Failed to load meal plan: ', err)
             toast.error('Failed to load meal plan')
         } finally {
             setLoading(false)
@@ -77,6 +78,7 @@ const MealPlanner = () => {
         try {
             await api.delete(`/meal-plans/${mealId}`)
             await fetchMealPlan()
+            toast.success('Meal removed')
         } catch {
             toast.error('Failed to remove meal')
         }
@@ -258,15 +260,8 @@ const MealPlanner = () => {
                         setShowAddModal(false)
                         setSelectedSlot(null)
                     }}
-                    onSuccess={(newMeal) => {
-                        // Add to local state
-                        const updatedPlan = { ...mealPlan }
-                        const date = selectedSlot.date
-                        if (!updatedPlan[date]) {
-                            updatedPlan[date] = {}
-                        }
-                        updatedPlan[date][selectedSlot.mealType] = newMeal
-                        setMealPlan(updatedPlan)
+                    onSuccess={() => {
+                        fetchMealPlan()
                         setShowAddModal(false)
                         setSelectedSlot(null)
                     }}

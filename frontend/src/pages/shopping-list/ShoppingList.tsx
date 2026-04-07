@@ -25,14 +25,15 @@ const ShoppingList = () => {
         try {
             const resp = await api.get('/shopping-list?grouped=true')
             const grouped = resp.data.data.items
-
             // convert grouped format to flat array
             const flatItems = []
             grouped.forEach((group) => {
-                group.item.forEach((item) => {
+                group.items.forEach((item) => {
                     flatItems.push({ ...item, category: group.category })
                 })
             })
+
+            console.log('Flat Items >>>> ', flatItems)
 
             setItems(flatItems)
             organizeByCategory(flatItems)
@@ -49,6 +50,7 @@ const ShoppingList = () => {
     }, [])
 
     const organizeByCategory = (itemsList) => {
+        console.log('Items List >>>> ', itemsList)
         const grouped = {}
         itemsList.forEach((item) => {
             const category = item.category || 'Other'
@@ -60,7 +62,7 @@ const ShoppingList = () => {
         setGroupedItems(grouped)
     }
 
-    const handleToggleChecked = (id: string) => {
+    const handleToggleChecked = async (id: string) => {
         const updatedItems = items.map((item) =>
             item.id === id ? { ...item, is_checked: !item.is_checked } : item,
         )
@@ -312,12 +314,14 @@ const AddItemModal = ({ onClose, onSuccess }) => {
         setLoading(true)
 
         try {
-            await api.post('/shopping-list', {
+            const resp = await api.post('/shopping-list', {
                 ...formData,
                 quantity: Number(formData.quantity),
             })
+
+            console.log('Shopping list resp >>>> ', resp)
             toast.success('Item added to shopping list')
-            onSuccess()
+            onSuccess(resp.data.data.item)
             onClose()
         } catch (err) {
             console.error('Failed to add item: ', err)
