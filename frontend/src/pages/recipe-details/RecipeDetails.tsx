@@ -1,9 +1,8 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Clock, Users, ArrowLeft, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Navbar from '../shared/Navbar'
-import { getRecipeById } from '../../data/dummyData'
 import api from '../../services/api'
 
 const NutritionCard = ({
@@ -52,8 +51,8 @@ const RecipeDetails = () => {
             await api.delete(`/recipes/${id}`)
             toast.success('Recipe deleted')
             navigate('/recipes')
-        } catch (err) {
-            toast.error('Failed to delete recipe: ', err)
+        } catch {
+            toast.error('Failed to delete recipe')
         }
     }
 

@@ -76,8 +76,8 @@ const MyRecipes = () => {
             await api.delete(`/recipes/${id}`)
             setRecipes(recipes.filter((recipe) => recipe.id !== id))
             toast.success('Recipe deleted')
-        } catch (err) {
-            toast.error('Failed to delete recipe: ', err)
+        } catch {
+            toast.error('Failed to delete recipe')
         }
     }
 
