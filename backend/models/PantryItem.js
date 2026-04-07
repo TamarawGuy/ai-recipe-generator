@@ -142,7 +142,7 @@ class PantryItem {
         const result = await db.query(
             `
                 DELETE FROM pantry_items WHERE id = $1 AND user_id = $2
-                RETUNING *
+                RETURNING *
             `,
             [id, userId],
         )
