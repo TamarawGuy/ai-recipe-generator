@@ -64,3 +64,19 @@ export type RecipeDetails = Recipe & {
     ingredients: RecipeIngredient[]
     nutrition: RecipeNutrition | null
 }
+
+/**
+ * Pantry item
+ */
+export type PantryItem = {
+    id: string
+    user_id: string
+    name: string
+    quantity: string
+    unit: string
+    category: string
+    expiry_date: string | null
+    is_running_low: boolean
+    created_at: string
+    updated_at: string
+}

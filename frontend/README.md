@@ -59,8 +59,6 @@ src/
 ├── ui/
 │   ├── InputField.tsx              # Reusable form input with icon
 │   └── ProtectedRoute.tsx          # Route guard (redirects to /login)
-├── data/
-│   └── dummyData.ts                # Fallback/default data
 └── pages/
     ├── login/                      # Login form
     ├── sign-up/                    # Registration form

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type SubmitEvent } from 'react'
 import { Plus, Search, X, Calendar, AlertCircle } from 'lucide-react'
 import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import api from '../../services/api'
 import Loading from '../shared/Loading'
+import type { PantryItem } from '../../types'
 
 const CATEGORIES = [
     'Vegetables',
@@ -17,17 +18,18 @@ const CATEGORIES = [
 ]
 
 const Pantry = () => {
-    const [items, setItems] = useState([])
-    const [filteredItems, setFilteredItems] = useState([])
+    const [items, setItems] = useState<PantryItem[]>([])
+    const [filteredItems, setFilteredItems] = useState<PantryItem[]>([])
     const [showAddModal, setShowAddModal] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('All')
-    const [expiringItems, setExpiringItems] = useState([])
+    const [expiringItems, setExpiringItems] = useState<PantryItem[]>([])
     const [loading, setLoading] = useState(false)
 
     const fetchPantryItems = async () => {
         try {
             const resp = await api.get('/pantry')
+            console.log('Pantry Items >>>> ', resp.data.data.items)
             setItems(resp.data.data.items)
         } catch (err) {
             console.error('Failed to load pantry items: ', err)
@@ -39,13 +41,14 @@ const Pantry = () => {
     const fetchExpiringItems = async () => {
         try {
             const resp = await api.get('/pantry/expiring-soon?days=7')
+            console.log('Expiring Items >>>> ', resp.data.data.items)
             setExpiringItems(resp.data.data.items)
         } catch (err) {
             console.error('Failed to load expiring items: ', err)
         }
     }
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this item?')) return
 
         try {
@@ -53,7 +56,8 @@ const Pantry = () => {
             setItems(items.filter((item) => item.id !== id))
             toast.success('Item deleted')
         } catch (err) {
-            toast.error('Failed to delete item: ', err)
+            console.error('Failed to delete item: ', err)
+            toast.error('Failed to delete item')
         }
     }
 
@@ -202,7 +206,13 @@ const Pantry = () => {
     )
 }
 
-const CategoryButton = ({ label, active, onClick }) => (
+type CategoryButtonProps = {
+    label: string
+    active: boolean
+    onClick: () => void
+}
+
+const CategoryButton = ({ label, active, onClick }: CategoryButtonProps) => (
     <button
         onClick={onClick}
         className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
@@ -215,7 +225,17 @@ const CategoryButton = ({ label, active, onClick }) => (
     </button>
 )
 
-const PantryItemCard = ({ item, onDelete, isExpiring }) => {
+type PantryItemCardProps = {
+    item: PantryItem
+    onDelete: (id: string) => void
+    isExpiring: boolean
+}
+
+const PantryItemCard = ({
+    item,
+    onDelete,
+    isExpiring,
+}: PantryItemCardProps) => {
     const isExpired =
         item.expiry_date && new Date(item.expiry_date) < new Date()
 

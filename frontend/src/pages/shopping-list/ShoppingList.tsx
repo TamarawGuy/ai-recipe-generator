@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { ShoppingCart, Plus, X, Check, Trash2 } from 'lucide-react'
 import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
-import { dummyShoppingListItems } from '../../data/dummyData'
 import api from '../../services/api'
 
 const CATEGORIES = [
