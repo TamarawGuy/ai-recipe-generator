@@ -43,7 +43,7 @@ export type Recipe = {
 export type RecipeIngredient = {
     id: string
     recipe_id: string
-    ingredient_name: string
+    name: string
     quantity: number
     unit: string
     created_at: string

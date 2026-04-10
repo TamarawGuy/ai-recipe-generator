@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import Navbar from '../shared/Navbar'
 import Loading from '../shared/Loading'
 import api from '../../services/api'
+import type { RecipeDetails } from '../../types.d'
 
 const NutritionCard = ({
     label,
@@ -27,7 +28,7 @@ const NutritionCard = ({
 const RecipeDetails = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const [recipe, setRecipe] = useState(null)
+    const [recipe, setRecipe] = useState<RecipeDetails | null>(null)
     const [servings, setServings] = useState(4)
     const [checkedIngredients, setCheckedIngredients] = useState(new Set())
     const [loading, setLoading] = useState(true)

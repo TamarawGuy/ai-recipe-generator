@@ -8,7 +8,9 @@ import RecipeCard from './components/RecipeCard'
 import api from '../../services/api'
 import Loading from '../shared/Loading'
 
-const cuisines = [
+import type { Recipe } from '../../types.d'
+
+const CUISINES = [
     'All',
     'Italian',
     'Mexican',
@@ -20,11 +22,11 @@ const cuisines = [
     'Mediterranean',
     'American',
 ]
-const difficulties = ['All', 'easy', 'medium', 'hard']
+const DIFFICULTIES = ['All', 'easy', 'medium', 'hard']
 
 const MyRecipes = () => {
-    const [recipes, setRecipes] = useState([])
-    const [filteredRecipes, setFilteredRecipes] = useState([])
+    const [recipes, setRecipes] = useState<Recipe[]>([])
+    const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([])
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedCuisine, setSelectedCuisine] = useState('All')
     const [selectedDifficulty, setSelectedDifficulty] = useState('All')
@@ -131,7 +133,7 @@ const MyRecipes = () => {
                             onChange={(e) => setSelectedCuisine(e.target.value)}
                             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                         >
-                            {cuisines.map((cuisine) => (
+                            {CUISINES.map((cuisine) => (
                                 <option key={cuisine} value={cuisine}>
                                     {cuisine === 'All'
                                         ? 'All Cuisines'
@@ -148,7 +150,7 @@ const MyRecipes = () => {
                             }
                             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                         >
-                            {difficulties.map((diff) => (
+                            {DIFFICULTIES.map((diff) => (
                                 <option key={diff} value={diff}>
                                     {diff === 'All'
                                         ? 'All Difficulties'
