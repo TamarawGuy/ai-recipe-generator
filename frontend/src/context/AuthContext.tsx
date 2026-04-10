@@ -6,8 +6,8 @@ import {
     type ReactNode,
 } from 'react'
 import axios from 'axios'
-import { type User } from '../types/user'
 import api from '../services/api'
+import type { User } from '../types.d'
 
 type AuthContextProps = {
     user: User | null
@@ -63,10 +63,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             return { success: true }
         } catch (err) {
-            const message =
-                axios.isAxiosError(err)
-                    ? err.response?.data?.message
-                    : undefined
+            const message = axios.isAxiosError(err)
+                ? err.response?.data?.message
+                : undefined
             return {
                 success: false,
                 message: message || 'Login failed',
@@ -89,10 +88,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             return { success: true }
         } catch (err) {
-            const message =
-                axios.isAxiosError(err)
-                    ? err.response?.data?.message
-                    : undefined
+            const message = axios.isAxiosError(err)
+                ? err.response?.data?.message
+                : undefined
             return {
                 success: false,
                 message: message || 'Registration failed',
