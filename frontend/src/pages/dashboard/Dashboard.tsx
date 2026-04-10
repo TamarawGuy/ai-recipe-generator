@@ -5,6 +5,7 @@ import { ChefHat, UtensilsCrossed, Calendar, Clock } from 'lucide-react'
 import Navbar from '../shared/Navbar'
 import StatCard from './components/StatCard'
 import Header from './components/Header'
+import Loading from '../shared/Loading'
 import api from '../../services/api'
 
 const Dashboard = () => {
@@ -47,14 +48,7 @@ const Dashboard = () => {
     }, [])
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-50">
-                <Navbar />
-                <div className="flex items-center justify-center h-96">
-                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-            </div>
-        )
+        return <Loading />
     }
 
     return (

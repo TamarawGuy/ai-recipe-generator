@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { ChefHat, Sparkles, Plus, X, Clock, Users } from 'lucide-react'
 import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
-import { dummyPreferences, dummyGeneratedRecipe } from '../../data/dummyData'
 import api from '../../services/api'
 
 const CUISINES = [
@@ -159,7 +158,8 @@ const RecipeGenerator = () => {
 
             toast.success('Recipe saved to your collection!')
         } catch (err) {
-            toast.error('Failed to save recipe: ', err)
+            console.error('Failed to save recipe: ', err)
+            toast.error('Failed to save recipe')
         } finally {
             setSaving(false)
         }

@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, ChefHat } from 'lucide-react'
 import toast from 'react-hot-toast'
+
 import Navbar from '../shared/Navbar'
 import RecipeCard from './components/RecipeCard'
 import api from '../../services/api'
+import Loading from '../shared/Loading'
 
 const cuisines = [
     'All',
@@ -90,14 +92,7 @@ const MyRecipes = () => {
     }, [recipes, searchQuery, selectedCuisine, selectedDifficulty])
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-500">
-                <Navbar />
-                <div className="flex items-center justify-center h-96">
-                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-            </div>
-        )
+        return <Loading />
     }
 
     return (

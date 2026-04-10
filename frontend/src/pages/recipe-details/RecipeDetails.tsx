@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Clock, Users, ArrowLeft, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Navbar from '../shared/Navbar'
+import Loading from '../shared/Loading'
 import api from '../../services/api'
 
 const NutritionCard = ({
@@ -85,14 +86,7 @@ const RecipeDetails = () => {
     const originalServings = recipe.servings || 4
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-500">
-                <Navbar />
-                <div className="flex items-center justify-center h-96">
-                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-            </div>
-        )
+        return <Loading />
     }
 
     return (

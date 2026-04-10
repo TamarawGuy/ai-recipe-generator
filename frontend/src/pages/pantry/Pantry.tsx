@@ -1,10 +1,10 @@
-import { useState, useEffect, type FormEvent } from 'react'
+import { useState, useEffect } from 'react'
 import { Plus, Search, X, Calendar, AlertCircle } from 'lucide-react'
 import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
-import { dummyPantryItems, getExpiringItems } from '../../data/dummyData'
 import api from '../../services/api'
+import Loading from '../shared/Loading'
 
 const CATEGORIES = [
     'Vegetables',
@@ -30,7 +30,7 @@ const Pantry = () => {
             const resp = await api.get('/pantry')
             setItems(resp.data.data.items)
         } catch (err) {
-            console.error('Failed to load pantry items')
+            console.error('Failed to load pantry items: ', err)
         } finally {
             setLoading(false)
         }
@@ -41,7 +41,7 @@ const Pantry = () => {
             const resp = await api.get('/pantry/expiring-soon?days=7')
             setExpiringItems(resp.data.data.items)
         } catch (err) {
-            console.error('Failed to load expiring items')
+            console.error('Failed to load expiring items: ', err)
         }
     }
 
@@ -85,14 +85,7 @@ const Pantry = () => {
     }, [items, searchQuery, selectedCategory])
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-50">
-                <Navbar />
-                <div className="flex items-center justify-center h-96">
-                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-            </div>
-        )
+        return <Loading />
     }
 
     return (

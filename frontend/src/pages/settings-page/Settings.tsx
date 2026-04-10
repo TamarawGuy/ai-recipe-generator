@@ -4,7 +4,7 @@ import Navbar from '../shared/Navbar'
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import { dummyUser, dummyPreferences } from '../../data/dummyData'
+import Loading from '../shared/Loading'
 import api from '../../services/api'
 
 const DIETARY_OPTIONS = [
@@ -199,6 +199,10 @@ const Settings = () => {
                 ? prev.preferred_cuisines.filter((c) => c !== cuisine)
                 : [...prev.preferred_cuisines, cuisine],
         }))
+    }
+
+    if (loading) {
+        return <Loading />
     }
 
     return (

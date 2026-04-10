@@ -4,6 +4,7 @@ import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
 import { format, startOfWeek, addDays } from 'date-fns'
 import api from '../../services/api'
+import Loading from '../shared/Loading'
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'dinner']
 const DAYS_OF_WEEK = [
@@ -87,6 +88,10 @@ const MealPlanner = () => {
     const getDayMeals = (dayIndex: number) => {
         const date = format(addDays(weekStart, dayIndex), 'yyyy-MM-dd')
         return mealPlan[date] || {}
+    }
+
+    if (loading) {
+        return <Loading />
     }
 
     return (
