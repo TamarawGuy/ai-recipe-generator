@@ -5,18 +5,22 @@ import {
     useEffect,
     type ReactNode,
 } from 'react'
-import { type DummyUser } from '../data/dummyData'
+import axios from 'axios'
+import { type User } from '../types/user'
 import api from '../services/api'
 
 type AuthContextProps = {
-    user: DummyUser | null
+    user: User | null
     loading: boolean
-    login: (email: string, password: string) => Promise<{ success: boolean }>
+    login: (
+        email: string,
+        password: string,
+    ) => Promise<{ success: boolean; message?: string }>
     register: (
         name: string,
         email: string,
         password: string,
-    ) => Promise<{ success: boolean }>
+    ) => Promise<{ success: boolean; message?: string }>
     logout: () => void
     isAuthenticated: boolean
 }
@@ -34,7 +38,7 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<DummyUser | null>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -59,9 +63,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             return { success: true }
         } catch (err) {
+            const message =
+                axios.isAxiosError(err)
+                    ? err.response?.data?.message
+                    : undefined
             return {
                 success: false,
-                message: err.response?.data?.message || 'Login failed',
+                message: message || 'Login failed',
             }
         }
     }
@@ -81,9 +89,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             return { success: true }
         } catch (err) {
+            const message =
+                axios.isAxiosError(err)
+                    ? err.response?.data?.message
+                    : undefined
             return {
                 success: false,
-                message: err.message?.data?.message || 'Registration failed',
+                message: message || 'Registration failed',
             }
         }
     }
