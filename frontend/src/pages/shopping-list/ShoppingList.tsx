@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type SubmitEvent } from 'react'
 import { ShoppingCart, Plus, X, Check, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -6,6 +6,8 @@ import Navbar from '../../shared/Navbar'
 import Loading from '../../shared/Loading'
 
 import api from '../../services/api'
+
+import type { GroupedShoppingListItem, ShoppingListItem } from '../../types.d'
 
 const CATEGORIES = [
     'Produce',
@@ -18,24 +20,25 @@ const CATEGORIES = [
 ]
 
 const ShoppingList = () => {
-    const [items, setItems] = useState([])
-    const [groupedItems, setGroupedItems] = useState({})
+    const [items, setItems] = useState<ShoppingListItem[]>([])
+    const [groupedItems, setGroupedItems] = useState<
+        Record<string, ShoppingListItem[]>
+    >({})
     const [showAddModal, setShowAddModal] = useState(false)
     const [loading, setLoading] = useState(true)
 
     const fetchShoppingList = async () => {
         try {
             const resp = await api.get('/shopping-list?grouped=true')
+
             const grouped = resp.data.data.items
             // convert grouped format to flat array
-            const flatItems = []
-            grouped.forEach((group) => {
+            const flatItems: ShoppingListItem[] = []
+            grouped.forEach((group: GroupedShoppingListItem) => {
                 group.items.forEach((item) => {
                     flatItems.push({ ...item, category: group.category })
                 })
             })
-
-            console.log('Flat Items >>>> ', flatItems)
 
             setItems(flatItems)
             organizeByCategory(flatItems)
@@ -51,10 +54,9 @@ const ShoppingList = () => {
         fetchShoppingList()
     }, [])
 
-    const organizeByCategory = (itemsList) => {
-        console.log('Items List >>>> ', itemsList)
-        const grouped = {}
-        itemsList.forEach((item) => {
+    const organizeByCategory = (itemsList: ShoppingListItem[]) => {
+        const grouped = {} as Record<string, ShoppingListItem[]>
+        itemsList.forEach((item: ShoppingListItem) => {
             const category = item.category || 'Other'
             if (!grouped[category]) {
                 grouped[category] = []
@@ -202,14 +204,18 @@ const ShoppingList = () => {
                                         </h2>
                                     </div>
                                     <div className="divide-y divide-gray-100">
-                                        {categoryItems.map((item) => (
-                                            <ShoppingListItem
-                                                key={item.id}
-                                                item={item}
-                                                onToggle={handleToggleChecked}
-                                                onDelete={handleDeleteItem}
-                                            />
-                                        ))}
+                                        {categoryItems.map(
+                                            (item: ShoppingListItem) => (
+                                                <ShoppingListItem
+                                                    key={item.id}
+                                                    item={item}
+                                                    onToggle={
+                                                        handleToggleChecked
+                                                    }
+                                                    onDelete={handleDeleteItem}
+                                                />
+                                            ),
+                                        )}
                                     </div>
                                 </div>
                             ),
@@ -236,7 +242,7 @@ const ShoppingList = () => {
             {showAddModal && (
                 <AddItemModal
                     onClose={() => setShowAddModal(false)}
-                    onSuccess={(newItem) => {
+                    onSuccess={(newItem: ShoppingListItem) => {
                         // Add to local state
                         const updatedItems = [...items, newItem]
                         setItems(updatedItems)
@@ -249,7 +255,17 @@ const ShoppingList = () => {
     )
 }
 
-const ShoppingListItem = ({ item, onToggle, onDelete }) => {
+type ShoppingListItemProps = {
+    item: ShoppingListItem
+    onToggle: (id: string) => void
+    onDelete: (id: string) => void
+}
+
+const ShoppingListItem = ({
+    item,
+    onToggle,
+    onDelete,
+}: ShoppingListItemProps) => {
     return (
         <div className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors group">
             <button onClick={() => onToggle(item.id)} className="shrink-0">
@@ -294,7 +310,12 @@ const ShoppingListItem = ({ item, onToggle, onDelete }) => {
     )
 }
 
-const AddItemModal = ({ onClose, onSuccess }) => {
+type AddItemModalProps = {
+    onClose: () => void
+    onSuccess: (item: ShoppingListItem) => void
+}
+
+const AddItemModal = ({ onClose, onSuccess }: AddItemModalProps) => {
     const [formData, setFormData] = useState({
         ingredient_name: '',
         quantity: '',

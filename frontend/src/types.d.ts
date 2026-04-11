@@ -104,6 +104,21 @@ export type MealPlan = {
 }
 
 /**
+ * Upcoming Meal
+ */
+export type UpcomingMeal = {
+    id: string
+    user_id: string
+    recipe_id: string
+    recipe_name: string
+    image_url: string | null
+    meal_date: string
+    meal_type: MealType
+    created_at: string
+    updated_at: string
+}
+
+/**
  * Generated recipe
  */
 export type GeneratedRecipe = {
@@ -125,4 +140,25 @@ export type GeneratedRecipe = {
         fiber: number
     }
     cookingTips: string[]
+}
+
+/**
+ * Shopping List
+ */
+export type ShoppingListItem = {
+    id: string
+    user_id: string
+    ingredient_name: string
+    quantity: number
+    unit: string
+    category: string
+    is_checked: boolean
+    from_meal_plan: boolean
+    created_at: string
+    updated_at: string
+}
+
+export type GroupedShoppingListItem = {
+    category: string
+    items: ShoppingListItem[]
 }

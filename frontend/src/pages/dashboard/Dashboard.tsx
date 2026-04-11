@@ -8,7 +8,7 @@ import Header from './components/Header'
 import Loading from '../../shared/Loading'
 import api from '../../services/api'
 
-import type { Recipe } from '../../types.d'
+import type { Recipe, UpcomingMeal } from '../../types.d'
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
@@ -17,7 +17,7 @@ const Dashboard = () => {
         mealsThisWeek: 0,
     })
     const [recentRecipes, setRecentRecipes] = useState<Recipe[]>([])
-    const [upcomingMeals, setUpcomingMeals] = useState([])
+    const [upcomingMeals, setUpcomingMeals] = useState<UpcomingMeal[]>([])
     const [loading, setLoading] = useState(false)
 
     const fetchDashboardData = async () => {

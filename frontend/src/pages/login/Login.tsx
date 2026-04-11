@@ -24,7 +24,7 @@ const Login = () => {
             toast.success('Welcome Back!')
             navigate('/dashboard')
         } else {
-            toast.error(result.message)
+            toast.error(result.message || 'Invalid email or password')
         }
 
         setLoading(false)

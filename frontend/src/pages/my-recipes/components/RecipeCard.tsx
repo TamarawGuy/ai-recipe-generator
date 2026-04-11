@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom'
 import { ChefHat, Clock, Trash2 } from 'lucide-react'
 
-const RecipeCard = ({ recipe, onDelete }) => {
+import type { Recipe } from '../../../types.d'
+
+type RecipeCardProps = {
+    recipe: Recipe
+    onDelete: (id: string) => void
+}
+
+const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
     const totalTime = (recipe.prep_time || 0) + (recipe.cook_time || 0)
 
     return (
