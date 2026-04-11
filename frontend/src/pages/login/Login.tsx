@@ -4,8 +4,8 @@ import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
 import { Mail, Lock } from 'lucide-react'
 import InputField from '../../ui/InputField'
-import Logo from '../shared/Logo'
-import Loading from '../shared/Loading'
+import Logo from '../../shared/Logo'
+import Loading from '../../shared/Loading'
 
 const Login = () => {
     const navigate = useNavigate()

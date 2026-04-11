@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { Search, ChefHat } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-import Navbar from '../shared/Navbar'
+import Navbar from '../../shared/Navbar'
 import RecipeCard from './components/RecipeCard'
 import api from '../../services/api'
-import Loading from '../shared/Loading'
+import Loading from '../../shared/Loading'
 
 import type { Recipe } from '../../types.d'
 

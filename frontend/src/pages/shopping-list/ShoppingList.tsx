@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import { ShoppingCart, Plus, X, Check, Trash2 } from 'lucide-react'
-import Navbar from '../shared/Navbar'
 import toast from 'react-hot-toast'
+
+import Navbar from '../../shared/Navbar'
+import Loading from '../../shared/Loading'
+
 import api from '../../services/api'
 
 const CATEGORIES = [
@@ -133,14 +136,7 @@ const ShoppingList = () => {
     const totalCount = items.length
 
     if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-500">
-                <Navbar />
-                <div className="flex items-center justify-center h-96">
-                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-            </div>
-        )
+        return <Loading />
     }
 
     return (

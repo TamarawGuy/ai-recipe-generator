@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { User, Lock, Trash2, Save } from 'lucide-react'
-import Navbar from '../shared/Navbar'
+import Navbar from '../../shared/Navbar'
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import Loading from '../shared/Loading'
+import Loading from '../../shared/Loading'
 import api from '../../services/api'
 
 const DIETARY_OPTIONS = [

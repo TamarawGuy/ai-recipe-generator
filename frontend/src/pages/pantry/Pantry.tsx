@@ -1,10 +1,10 @@
 import { useState, useEffect, type SubmitEvent } from 'react'
 import { Plus, Search, X, Calendar, AlertCircle } from 'lucide-react'
-import Navbar from '../shared/Navbar'
+import Navbar from '../../shared/Navbar'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import api from '../../services/api'
-import Loading from '../shared/Loading'
+import Loading from '../../shared/Loading'
 import type { PantryItem } from '../../types'
 
 const CATEGORIES = [
@@ -29,7 +29,6 @@ const Pantry = () => {
     const fetchPantryItems = async () => {
         try {
             const resp = await api.get('/pantry')
-            console.log('Pantry Items >>>> ', resp.data.data.items)
             setItems(resp.data.data.items)
         } catch (err) {
             console.error('Failed to load pantry items: ', err)
@@ -41,7 +40,6 @@ const Pantry = () => {
     const fetchExpiringItems = async () => {
         try {
             const resp = await api.get('/pantry/expiring-soon?days=7')
-            console.log('Expiring Items >>>> ', resp.data.data.items)
             setExpiringItems(resp.data.data.items)
         } catch (err) {
             console.error('Failed to load expiring items: ', err)

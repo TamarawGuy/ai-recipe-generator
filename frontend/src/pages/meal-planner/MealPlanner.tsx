@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type SubmitEvent } from 'react'
 import { Plus, X, ChefHat } from 'lucide-react'
-import Navbar from '../shared/Navbar'
+import Navbar from '../../shared/Navbar'
 import toast from 'react-hot-toast'
 import { format, startOfWeek, addDays } from 'date-fns'
 import api from '../../services/api'
-import Loading from '../shared/Loading'
+import Loading from '../../shared/Loading'
 
-const MEAL_TYPES = ['breakfast', 'lunch', 'dinner']
+import type { MealType, MealPlan, Recipe } from '../../types.d'
+
+const MEAL_TYPES: MealType[] = ['breakfast', 'lunch', 'dinner']
 const DAYS_OF_WEEK = [
     'Sunday',
     'Monday',
@@ -19,10 +21,15 @@ const DAYS_OF_WEEK = [
 
 const MealPlanner = () => {
     const [weekStart, setWeekStart] = useState(startOfWeek(new Date()))
-    const [mealPlan, setMealPlan] = useState({})
+    const [mealPlan, setMealPlan] = useState<
+        Record<string, Partial<Record<MealType, MealPlan>>>
+    >({})
     const [recipes, setRecipes] = useState([])
     const [showAddModal, setShowAddModal] = useState(false)
-    const [selectedSlot, setSelectedSlot] = useState(null)
+    const [selectedSlot, setSelectedSlot] = useState<{
+        date: string
+        mealType: MealType
+    } | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -38,11 +45,16 @@ const MealPlanner = () => {
             const resp = await api.get(
                 `/meal-plans/weekly?start_date=${startDate}&end_date=${endDate}`,
             )
-            const meals = resp.data.data.mealPlans
+            const meals = resp.data.data.mealPlans as MealPlan[]
+
+            console.log('Meals >>>> ', meals)
 
             // organize meals by date and meal type
-            const organized = {}
-            meals.forEach((meal) => {
+            const organized: Record<
+                string,
+                Partial<Record<MealType, MealPlan>>
+            > = {}
+            meals.forEach((meal: MealPlan) => {
                 const dateKey = meal.meal_date
                 if (!organized[dateKey]) {
                     organized[dateKey] = {}
@@ -50,8 +62,10 @@ const MealPlanner = () => {
                 organized[dateKey][meal.meal_type] = meal
             })
 
+            console.log('Organized meal plan >>>> ', organized)
+
             setMealPlan(organized)
-        } catch {
+        } catch (err) {
             console.error('Failed to load meal plan: ', err)
             toast.error('Failed to load meal plan')
         } finally {
@@ -68,7 +82,7 @@ const MealPlanner = () => {
         }
     }
 
-    const handleAddMeal = (date, mealType) => {
+    const handleAddMeal = (date: string, mealType: MealType) => {
         setSelectedSlot({ date, mealType })
         setShowAddModal(true)
     }
@@ -93,6 +107,8 @@ const MealPlanner = () => {
     if (loading) {
         return <Loading />
     }
+
+    console.log('Selected slot >>>> ', selectedSlot)
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -276,7 +292,21 @@ const MealPlanner = () => {
     )
 }
 
-const AddMealModal = ({ date, mealType, recipes, onClose, onSuccess }) => {
+type AddMealModalProps = {
+    date: string
+    mealType: MealType
+    recipes: Recipe[]
+    onClose: () => void
+    onSuccess: () => void
+}
+
+const AddMealModal = ({
+    date,
+    mealType,
+    recipes,
+    onClose,
+    onSuccess,
+}: AddMealModalProps) => {
     const [selectedRecipe, setSelectedRecipe] = useState('')
     const [loading, setLoading] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')

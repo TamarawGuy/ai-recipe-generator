@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChefHat, UtensilsCrossed, Calendar, Clock } from 'lucide-react'
 
-import Navbar from '../shared/Navbar'
+import Navbar from '../../shared/Navbar'
 import StatCard from './components/StatCard'
 import Header from './components/Header'
-import Loading from '../shared/Loading'
+import Loading from '../../shared/Loading'
 import api from '../../services/api'
+
+import type { Recipe } from '../../types.d'
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
@@ -14,7 +16,7 @@ const Dashboard = () => {
         pantryItems: 0,
         mealsThisWeek: 0,
     })
-    const [recentRecipes, setRecentRecipes] = useState([])
+    const [recentRecipes, setRecentRecipes] = useState<Recipe[]>([])
     const [upcomingMeals, setUpcomingMeals] = useState([])
     const [loading, setLoading] = useState(false)
 

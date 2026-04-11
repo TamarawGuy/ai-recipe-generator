@@ -80,3 +80,25 @@ export type PantryItem = {
     created_at: string
     updated_at: string
 }
+
+/**
+ * Meal type
+ */
+export type MealType = 'breakfast' | 'lunch' | 'dinner'
+
+/**
+ * Meal plan
+ */
+export type MealPlan = {
+    id: string
+    user_id: string
+    recipe_id: string
+    recipe_name: string
+    meal_date: string
+    meal_type: MealType
+    cook_time: number | null
+    prep_time: number | null
+    image_url: string | null
+    created_at: string
+    updated_at: string
+}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, User } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../../context/AuthContext'
-import Logo from '../shared/Logo'
+import Logo from '../../shared/Logo'
 import InputField from '../../ui/InputField'
 
 const SignUp = () => {
