@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type SubmitEvent } from 'react'
 import { User, Lock, Trash2, Save } from 'lucide-react'
 import Navbar from '../../shared/Navbar'
 import { useAuth } from '../../context/AuthContext'
@@ -28,6 +28,14 @@ const CUISINES = [
     'American',
 ]
 
+type Preferences = {
+    dietary_restrictions: string[]
+    allergies: string[]
+    preferred_cuisines: string[]
+    default_servings: number
+    measurement_unit: 'metric' | 'imperial'
+}
+
 const Settings = () => {
     const { user, logout } = useAuth()
     const navigate = useNavigate()
@@ -41,7 +49,7 @@ const Settings = () => {
     })
 
     // Preferences state
-    const [preferences, setPreferences] = useState({
+    const [preferences, setPreferences] = useState<Preferences>({
         dietary_restrictions: [],
         allergies: [],
         preferred_cuisines: [],
@@ -87,7 +95,7 @@ const Settings = () => {
         }
     }
 
-    const handleProfileUpdate = async (e) => {
+    const handleProfileUpdate = async (e: SubmitEvent) => {
         e.preventDefault()
 
         setSaving(true)
@@ -106,7 +114,7 @@ const Settings = () => {
         }
     }
 
-    const handlePreferencesUpdate = async (e) => {
+    const handlePreferencesUpdate = async (e: SubmitEvent) => {
         e.preventDefault()
         setSaving(true)
 
@@ -121,7 +129,7 @@ const Settings = () => {
         }
     }
 
-    const handlePasswordChange = async (e) => {
+    const handlePasswordChange = async (e: SubmitEvent) => {
         e.preventDefault()
 
         if (passwordData.newPassword !== passwordData.confirmPassword) {
@@ -183,7 +191,7 @@ const Settings = () => {
         }
     }
 
-    const toggleDietary = (option) => {
+    const toggleDietary = (option: string) => {
         setPreferences((prev) => ({
             ...prev,
             dietary_restrictions: prev.dietary_restrictions.includes(option)
@@ -192,7 +200,7 @@ const Settings = () => {
         }))
     }
 
-    const toggleCuisine = (cuisine) => {
+    const toggleCuisine = (cuisine: string) => {
         setPreferences((prev) => ({
             ...prev,
             preferred_cuisines: prev.preferred_cuisines.includes(cuisine)
