@@ -43,7 +43,7 @@ const RecipeGenerator = () => {
     const [generatedRecipe, setGeneratedRecipe] =
         useState<GeneratedRecipe | null>(null)
     const [saving, setSaving] = useState(false)
-    const [preferencesLoaded, setPreferencesLoaded] = useState(false)
+    const [, setPreferencesLoaded] = useState(false)
 
     const fetchUserPreferences = async () => {
         try {
