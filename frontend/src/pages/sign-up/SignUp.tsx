@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, User } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -14,17 +14,19 @@ const SignUp = () => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: SubmitEvent) => {
         e.preventDefault()
         setLoading(true)
 
         const res = await register(name, email, password)
 
+        console.log('Res >>>> ', res)
+
         if (res.success) {
             toast.success('Account created successfully!')
             navigate('/dashboard')
         } else {
-            toast.error(res.message)
+            toast.error(res.message || 'Failed to create account')
         }
 
         setLoading(false)

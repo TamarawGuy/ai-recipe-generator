@@ -3,6 +3,7 @@ import { ChefHat, Sparkles, Plus, X, Clock, Users } from 'lucide-react'
 import Navbar from '../../shared/Navbar'
 import toast from 'react-hot-toast'
 import api from '../../services/api'
+import type { GeneratedRecipe } from '../../types.d'
 
 const CUISINES = [
     'Any',
@@ -31,15 +32,16 @@ const COOKING_TIMES = [
 ]
 
 const RecipeGenerator = () => {
-    const [ingredients, setIngredients] = useState([])
+    const [ingredients, setIngredients] = useState<string[]>([])
     const [inputValue, setInputValue] = useState('')
     const [usePantry, setUsePantry] = useState(false)
     const [cuisineType, setCuisineType] = useState('Any')
-    const [dietaryRestrictions, setDietaryRestrictions] = useState([])
+    const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([])
     const [servings, setServings] = useState(4)
     const [cookingTime, setCookingTime] = useState('medium')
     const [generating, setGenerating] = useState(false)
-    const [generatedRecipe, setGeneratedRecipe] = useState(null)
+    const [generatedRecipe, setGeneratedRecipe] =
+        useState<GeneratedRecipe | null>(null)
     const [saving, setSaving] = useState(false)
     const [preferencesLoaded, setPreferencesLoaded] = useState(false)
 
@@ -90,11 +92,11 @@ const RecipeGenerator = () => {
         }
     }
 
-    const removeIngredient = (ingredient) => {
+    const removeIngredient = (ingredient: string) => {
         setIngredients(ingredients.filter((i) => i !== ingredient))
     }
 
-    const toggleDietary = (option) => {
+    const toggleDietary = (option: string) => {
         if (dietaryRestrictions.includes(option)) {
             setDietaryRestrictions(
                 dietaryRestrictions.filter((d) => d !== option),
@@ -128,9 +130,8 @@ const RecipeGenerator = () => {
             setGeneratedRecipe(resp.data.data.recipe)
             toast.success('Recipe generated successfully!')
         } catch (err) {
-            toast.error(
-                err.response?.data?.message || 'Failed to generate recipe',
-            )
+            console.error('Failed to generate recipe: ', err)
+            toast.error('Failed to generate recipe')
         } finally {
             setGenerating(false)
         }
@@ -575,7 +576,15 @@ const RecipeGenerator = () => {
     )
 }
 
-const NutritionBadge = ({ label, value, unit }) => (
+const NutritionBadge = ({
+    label,
+    value,
+    unit,
+}: {
+    label: string
+    value: number
+    unit: string
+}) => (
     <div className="text-center p-3 bg-gray-50 rounded-lg">
         <div className="text-lg font-bold text-gray-900">
             {value}

@@ -102,3 +102,27 @@ export type MealPlan = {
     created_at: string
     updated_at: string
 }
+
+/**
+ * Generated recipe
+ */
+export type GeneratedRecipe = {
+    name: string
+    description: string
+    cuisineType: string
+    difficulty: 'easy' | 'medium' | 'large'
+    prepTime: number
+    cookTime: number
+    servings: number
+    ingredients: { name: string; quantity: number; unit: string }[]
+    instructions: string[]
+    dietaryTags: string[]
+    nutrition: {
+        calories: number
+        protein: number
+        carbs: number
+        fats: number
+        fiber: number
+    }
+    cookingTips: string[]
+}
