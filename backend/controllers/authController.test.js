@@ -17,7 +17,7 @@ jest.unstable_mockModule('../models/UserPreferences.js', () => ({
     },
 }))
 
-const { register } = await import('./authController.js')
+const { register, login } = await import('./authController.js')
 const { default: User } = await import('../models/User.js')
 const { default: UserPreferences } =
     await import('../models/UserPreferences.js')
@@ -143,6 +143,124 @@ describe('authController.register', () => {
         const next = jest.fn()
 
         await register(req, res, next)
+
+        expect(next).toHaveBeenCalledTimes(1)
+        expect(next).toHaveBeenCalledWith(error)
+        expect(res.status).not.toHaveBeenCalled()
+        expect(res.json).not.toHaveBeenCalled()
+    })
+})
+
+describe('authController.login', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        jest.spyOn(console, 'error').mockImplementation(() => {})
+    })
+    it('return 400 when email/password are missing', async () => {
+        const req = { body: {} }
+        const res = { status: jest.fn().mockReturnThis(), json: jest.fn() }
+        const next = jest.fn()
+
+        await login(req, res, next)
+
+        expect(res.status).toHaveBeenCalledWith(400)
+        expect(res.json).toHaveBeenCalledWith({
+            success: false,
+            message: 'Please provide email and password',
+        })
+        expect(User.findByEmail).not.toHaveBeenCalled()
+        expect(User.verifyPassword).not.toHaveBeenCalled()
+        expect(next).not.toHaveBeenCalled()
+    })
+    it('returns 401 when no user exists with the given email', async () => {
+        User.findByEmail.mockResolvedValue(null)
+
+        const req = { body: { email: 'test@example.com', password: 'test' } }
+        const res = { status: jest.fn().mockReturnThis(), json: jest.fn() }
+        const next = jest.fn()
+
+        await login(req, res, next)
+
+        expect(res.status).toHaveBeenCalledWith(401)
+        expect(res.json).toHaveBeenCalledWith({
+            success: false,
+            message: 'Invalid credentials',
+        })
+        expect(User.findByEmail).toHaveBeenCalledWith('test@example.com')
+        expect(User.verifyPassword).not.toHaveBeenCalled()
+        expect(next).not.toHaveBeenCalled()
+    })
+    it('returns 401 when password is incorrect', async () => {
+        User.findByEmail.mockResolvedValue({
+            id: '1',
+            email: 'test@example.com',
+            password_hash: 'fake-hash',
+        })
+        User.verifyPassword.mockResolvedValue(false)
+
+        const req = { body: { email: 'test@example.com', password: 'wrong' } }
+        const res = { status: jest.fn().mockReturnThis(), json: jest.fn() }
+        const next = jest.fn()
+
+        await login(req, res, next)
+
+        expect(res.status).toHaveBeenCalledWith(401)
+        expect(res.json).toHaveBeenCalledWith({
+            success: false,
+            message: 'Invalid credentials',
+        })
+        expect(User.verifyPassword).toHaveBeenCalledWith('wrong', 'fake-hash')
+        expect(next).not.toHaveBeenCalled()
+    })
+    it('return 200 when login is successful', async () => {
+        const user = {
+            id: '1',
+            email: 'test@example.com',
+            name: 'Test User',
+            password_has: 'fake-hash',
+        }
+        User.findByEmail.mockResolvedValue(user)
+        User.verifyPassword.mockResolvedValue(true)
+
+        const req = { body: { email: 'test@example.com', password: 'test' } }
+        const res = { status: jest.fn().mockReturnThis(), json: jest.fn() }
+        const next = jest.fn()
+
+        await login(req, res, next)
+
+        expect(res.status).toHaveBeenCalledWith(200)
+        expect(res.json).toHaveBeenCalledWith({
+            success: true,
+            message: 'Login successful',
+            data: {
+                user: {
+                    id: '1',
+                    email: 'test@example.com',
+                    name: 'Test User',
+                },
+                token: expect.any(String),
+            },
+        })
+        expect(next).not.toHaveBeenCalled()
+
+        // assert token is actually valid
+        const respPayload = res.json.mock.calls[0][0]
+        const decoded = jwt.verify(
+            respPayload.data.token,
+            process.env.JWT_SECRET,
+        )
+        expect(decoded.id).toBe('1')
+        expect(decoded.email).toBe('test@example.com')
+    })
+    it('forwards error to next()', async () => {
+        const error = new Error('DB connection lost')
+        User.findByEmail.mockRejectedValue(error)
+
+        const req = { body: { email: 'test@example.com', password: 'test' } }
+        const res = { status: jest.fn().mockReturnThis(), json: jest.fn() }
+        const next = jest.fn()
+
+        await login(req, res, next)
 
         expect(next).toHaveBeenCalledTimes(1)
         expect(next).toHaveBeenCalledWith(error)
