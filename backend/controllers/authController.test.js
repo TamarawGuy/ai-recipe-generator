@@ -3,22 +3,31 @@ import jwt from 'jsonwebtoken'
 
 process.env.JWT_SECRET = 'test-secret'
 
+const mockUser = {
+    findByEmail: jest.fn(),
+    create: jest.fn(),
+    findById: jest.fn(),
+    verifyPassword: jest.fn(),
+}
+
+const mockUserPreferences = {
+    upsert: jest.fn(),
+}
+
 jest.unstable_mockModule('../models/User.js', () => ({
-    default: {
-        findByEmail: jest.fn(),
-        create: jest.fn(),
-        verifyPassword: jest.fn(),
-    },
+    default: mockUser,
 }))
 
 jest.unstable_mockModule('../models/UserPreferences.js', () => ({
-    default: {
-        upsert: jest.fn(),
-    },
+    default: mockUserPreferences,
 }))
 
 const { register, login } = await import('./authController.js')
 const { default: User } = await import('../models/User.js')
+console.log(
+    'test User.create is mock?',
+    typeof User.create === 'function' && User.create._isMockFunction,
+)
 const { default: UserPreferences } =
     await import('../models/UserPreferences.js')
 
