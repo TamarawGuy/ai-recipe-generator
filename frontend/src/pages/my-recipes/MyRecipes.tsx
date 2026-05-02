@@ -33,6 +33,7 @@ const MyRecipes = () => {
     const [loading, setLoading] = useState(false)
 
     const fetchRecipes = async () => {
+        setLoading(true)
         try {
             const resp = await api.get('/recipes')
             setRecipes(resp.data.data.recipes)
