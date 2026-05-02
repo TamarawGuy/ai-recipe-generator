@@ -33,19 +33,6 @@ const RecipeDetails = () => {
     const [checkedIngredients, setCheckedIngredients] = useState(new Set())
     const [loading, setLoading] = useState(true)
 
-    const fetchRecipe = async () => {
-        try {
-            const resp = await api.get(`/recipes/${id}`)
-            const recipeData = resp.data.data.recipe
-            setRecipe(recipeData)
-            setServings(recipeData.servings || 4)
-        } catch (err) {
-            console.error('Failed to load recipe: ', err)
-        } finally {
-            setLoading(false)
-        }
-    }
-
     const handleDelete = async () => {
         if (!confirm('Are you sure you want to delete this recipe?')) return
 
@@ -76,6 +63,19 @@ const RecipeDetails = () => {
     }
 
     useEffect(() => {
+        const fetchRecipe = async () => {
+            try {
+                const resp = await api.get(`/recipes/${id}`)
+                const recipeData = resp.data.data.recipe
+                setRecipe(recipeData)
+                setServings(recipeData.servings || 4)
+            } catch (err) {
+                console.error('Failed to load recipe: ', err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
         fetchRecipe()
     }, [id])
 

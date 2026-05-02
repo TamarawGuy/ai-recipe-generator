@@ -1,4 +1,4 @@
-import { useState, useEffect, type SubmitEvent } from 'react'
+import { useState, useEffect, useCallback, type SubmitEvent } from 'react'
 import { Plus, X, ChefHat } from 'lucide-react'
 import Navbar from '../../shared/Navbar'
 import toast from 'react-hot-toast'
@@ -32,12 +32,7 @@ const MealPlanner = () => {
     } | null>(null)
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        fetchMealPlan()
-        fetchRecipes()
-    }, [weekStart])
-
-    const fetchMealPlan = async () => {
+    const fetchMealPlan = useCallback(async () => {
         try {
             const startDate = format(weekStart, 'yyyy-MM-dd')
             const endDate = format(addDays(weekStart, 6), 'yyyy-MM-dd')
@@ -46,8 +41,6 @@ const MealPlanner = () => {
                 `/meal-plans/weekly?start_date=${startDate}&end_date=${endDate}`,
             )
             const meals = resp.data.data.mealPlans as MealPlan[]
-
-            console.log('Meals >>>> ', meals)
 
             // organize meals by date and meal type
             const organized: Record<
@@ -62,8 +55,6 @@ const MealPlanner = () => {
                 organized[dateKey][meal.meal_type] = meal
             })
 
-            console.log('Organized meal plan >>>> ', organized)
-
             setMealPlan(organized)
         } catch (err) {
             console.error('Failed to load meal plan: ', err)
@@ -71,7 +62,7 @@ const MealPlanner = () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [weekStart])
 
     const fetchRecipes = async () => {
         try {
@@ -104,11 +95,14 @@ const MealPlanner = () => {
         return mealPlan[date] || {}
     }
 
+    useEffect(() => {
+        fetchMealPlan()
+        fetchRecipes()
+    }, [weekStart, fetchMealPlan])
+
     if (loading) {
         return <Loading />
     }
-
-    console.log('Selected slot >>>> ', selectedSlot)
 
     return (
         <div className="min-h-screen bg-gray-50">

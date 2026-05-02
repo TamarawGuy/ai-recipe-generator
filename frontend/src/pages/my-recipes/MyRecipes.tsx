@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, ChefHat } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -43,7 +43,7 @@ const MyRecipes = () => {
         }
     }
 
-    const filterRecipes = () => {
+    const filterRecipes = useCallback(() => {
         let filtered = recipes
 
         if (searchQuery) {
@@ -71,7 +71,7 @@ const MyRecipes = () => {
         }
 
         setFilteredRecipes(filtered)
-    }
+    }, [recipes, searchQuery, selectedCuisine, selectedDifficulty])
 
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this recipe?')) return
@@ -91,7 +91,13 @@ const MyRecipes = () => {
 
     useEffect(() => {
         filterRecipes()
-    }, [recipes, searchQuery, selectedCuisine, selectedDifficulty])
+    }, [
+        recipes,
+        searchQuery,
+        selectedCuisine,
+        selectedDifficulty,
+        filterRecipes,
+    ])
 
     if (loading) {
         return <Loading />

@@ -27,30 +27,30 @@ const ShoppingList = () => {
     const [showAddModal, setShowAddModal] = useState(false)
     const [loading, setLoading] = useState(true)
 
-    const fetchShoppingList = async () => {
-        try {
-            const resp = await api.get('/shopping-list?grouped=true')
-
-            const grouped = resp.data.data.items
-            // convert grouped format to flat array
-            const flatItems: ShoppingListItem[] = []
-            grouped.forEach((group: GroupedShoppingListItem) => {
-                group.items.forEach((item) => {
-                    flatItems.push({ ...item, category: group.category })
-                })
-            })
-
-            setItems(flatItems)
-            organizeByCategory(flatItems)
-        } catch (err) {
-            console.error('Failed to load shopping list: ', err)
-            toast.error('Failed to load shopping list')
-        } finally {
-            setLoading(false)
-        }
-    }
-
     useEffect(() => {
+        const fetchShoppingList = async () => {
+            try {
+                const resp = await api.get('/shopping-list?grouped=true')
+
+                const grouped = resp.data.data.items
+                // convert grouped format to flat array
+                const flatItems: ShoppingListItem[] = []
+                grouped.forEach((group: GroupedShoppingListItem) => {
+                    group.items.forEach((item) => {
+                        flatItems.push({ ...item, category: group.category })
+                    })
+                })
+
+                setItems(flatItems)
+                organizeByCategory(flatItems)
+            } catch (err) {
+                console.error('Failed to load shopping list: ', err)
+                toast.error('Failed to load shopping list')
+            } finally {
+                setLoading(false)
+            }
+        }
+
         fetchShoppingList()
     }, [])
 
@@ -335,7 +335,6 @@ const AddItemModal = ({ onClose, onSuccess }: AddItemModalProps) => {
                 quantity: Number(formData.quantity),
             })
 
-            console.log('Shopping list resp >>>> ', resp)
             toast.success('Item added to shopping list')
             onSuccess(resp.data.data.item)
             onClose()

@@ -1,4 +1,4 @@
-import { useState, useEffect, type SubmitEvent } from 'react'
+import { useState, useEffect, useCallback, type SubmitEvent } from 'react'
 import { Plus, Search, X, Calendar, AlertCircle } from 'lucide-react'
 import Navbar from '../../shared/Navbar'
 import toast from 'react-hot-toast'
@@ -26,7 +26,7 @@ const Pantry = () => {
     const [expiringItems, setExpiringItems] = useState<PantryItem[]>([])
     const [loading, setLoading] = useState(false)
 
-    const fetchPantryItems = async () => {
+    const fetchPantryItems = useCallback(async () => {
         try {
             const resp = await api.get('/pantry')
             setItems(resp.data.data.items)
@@ -35,16 +35,16 @@ const Pantry = () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [])
 
-    const fetchExpiringItems = async () => {
+    const fetchExpiringItems = useCallback(async () => {
         try {
             const resp = await api.get('/pantry/expiring-soon?days=7')
             setExpiringItems(resp.data.data.items)
         } catch (err) {
             console.error('Failed to load expiring items: ', err)
         }
-    }
+    }, [])
 
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this item?')) return
@@ -59,7 +59,7 @@ const Pantry = () => {
         }
     }
 
-    const filterItems = () => {
+    const filterItems = useCallback(() => {
         let filtered = items
 
         if (searchQuery) {
@@ -75,16 +75,16 @@ const Pantry = () => {
         }
 
         setFilteredItems(filtered)
-    }
+    }, [items, searchQuery, selectedCategory])
 
     useEffect(() => {
         fetchPantryItems()
         fetchExpiringItems()
-    }, [])
+    }, [fetchPantryItems, fetchExpiringItems])
 
     useEffect(() => {
         filterItems()
-    }, [items, searchQuery, selectedCategory])
+    }, [items, searchQuery, selectedCategory, filterItems])
 
     if (loading) {
         return <Loading />

@@ -20,8 +20,6 @@ const SignUp = () => {
 
         const res = await register(name, email, password)
 
-        console.log('Res >>>> ', res)
-
         if (res.success) {
             toast.success('Account created successfully!')
             navigate('/dashboard')
