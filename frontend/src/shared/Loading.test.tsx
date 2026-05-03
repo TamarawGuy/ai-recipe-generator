@@ -9,7 +9,7 @@ describe('Loading', () => {
     it('shows a loading status', () => {
         render(<Loading />)
         expect(
-            screen.getByRole('status', { name: 'Loading' }),
+            screen.getByRole('status', { name: 'Loadin' }),
         ).toBeInTheDocument()
     })
 
