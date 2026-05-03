@@ -14,9 +14,9 @@ RUN npm ci --omit=dev
 # Now copy the rest of your source code
 COPY . .
 
-# Tell Docker this container listens on port 5000
+# Tell Docker this container listens on port 8000
 # (documentation only — doesn't actually publish the port)
-EXPOSE 5000
+EXPOSE 8000
 
 # The command to run when the container starts
 CMD ["node", "server.js"]
