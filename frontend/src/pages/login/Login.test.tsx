@@ -108,4 +108,32 @@ describe('Login page', () => {
         expect(navigate).not.toHaveBeenCalled()
         expect(toast.success).not.toHaveBeenCalled()
     })
+
+    it('should NOT login and error toast shows fallback message', async () => {
+        const login = vi.fn().mockReturnValue({ success: false })
+        const navigate = vi.fn()
+
+        setupAuth(login)
+        vi.mocked(useNavigate).mockReturnValue(navigate)
+
+        const user = userEvent.setup()
+        render(<Login />, { wrapper: MemoryRouter })
+
+        const emailInput = screen.getByLabelText('Email')
+        const passwordInput = screen.getByLabelText('Password')
+        const signInButton = screen.getByRole('button', { name: 'Sign In' })
+
+        await user.type(emailInput, 'a@b.com')
+        await user.type(passwordInput, 'secret123')
+        await user.click(signInButton)
+
+        await waitFor(() =>
+            expect(toast.error).toHaveBeenCalledWith(
+                'Invalid email or password',
+            ),
+        )
+        expect(login).toHaveBeenCalledWith('a@b.com', 'secret123')
+        expect(navigate).not.toHaveBeenCalled()
+        expect(toast.success).not.toHaveBeenCalled()
+    })
 })
