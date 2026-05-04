@@ -79,7 +79,7 @@ const Login = () => {
                         disabled={loading}
                         className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2.5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        Sign In
                     </button>
                 </form>
 
