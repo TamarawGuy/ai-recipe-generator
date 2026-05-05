@@ -95,7 +95,7 @@ jobs:
             ghcr.io/tamarawguy/ai-recipe-generator-frontend:latest
             ghcr.io/tamarawguy/ai-recipe-generator-frontend:${{ github.sha }}
           build-args: |
-            VITE_API_URL=http://localhost:5050/api
+            VITE_API_URL=https://ai-recipe-generator-backend-obtc.onrender.com/api
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
