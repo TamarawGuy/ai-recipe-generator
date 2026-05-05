@@ -1,75 +1,34 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
 import Navbar from '../../shared/Navbar'
 import toast from 'react-hot-toast'
-import { format, startOfWeek, addDays } from 'date-fns'
+import { startOfWeek, addDays } from 'date-fns'
 
 import api from '../../services/api'
 
 import Loading from '../../shared/Loading'
 import AddMealModal from './components/AddMealModal'
-
-import type { MealType, MealPlan, Recipe } from '../../types.d'
 import WeekDisplay from './components/WeekDisplay'
 import Header from '../../shared/Header'
 import WeekNavigation from './components/WeekNavigation'
 import MealPlanStats from './components/MealPlanStats'
 import MealPlanCalendarGrid from './components/MealPlanCalendarGrid'
 
+import { useMealPlan } from './hooks/useMealPlan'
+
+import type { MealType } from '../../types.d'
+import { useRecipes } from './hooks/useRecipes'
+
 const MealPlanner = () => {
     const [weekStart, setWeekStart] = useState(startOfWeek(new Date()))
-    const [mealPlan, setMealPlan] = useState<
-        Record<string, Partial<Record<MealType, MealPlan>>>
-    >({})
-    const [recipes, setRecipes] = useState<Recipe[]>([])
     const [showAddModal, setShowAddModal] = useState(false)
     const [selectedSlot, setSelectedSlot] = useState<{
         date: string
         mealType: MealType
     } | null>(null)
-    const [loading, setLoading] = useState(true)
+    const { mealPlan, loading, refetchMealPlan } = useMealPlan(weekStart)
+    const { recipes } = useRecipes()
 
     const totalRecipesCount = recipes.length
-
-    const fetchMealPlan = useCallback(async () => {
-        try {
-            const startDate = format(weekStart, 'yyyy-MM-dd')
-            const endDate = format(addDays(weekStart, 6), 'yyyy-MM-dd')
-
-            const resp = await api.get(
-                `/meal-plans/weekly?start_date=${startDate}&end_date=${endDate}`,
-            )
-            const meals = resp.data.data.mealPlans as MealPlan[]
-
-            // organize meals by date and meal type
-            const organized: Record<
-                string,
-                Partial<Record<MealType, MealPlan>>
-            > = {}
-            meals.forEach((meal: MealPlan) => {
-                const dateKey = meal.meal_date
-                if (!organized[dateKey]) {
-                    organized[dateKey] = {}
-                }
-                organized[dateKey][meal.meal_type] = meal
-            })
-
-            setMealPlan(organized)
-        } catch (err) {
-            console.error('Failed to load meal plan: ', err)
-            toast.error('Failed to load meal plan')
-        } finally {
-            setLoading(false)
-        }
-    }, [weekStart])
-
-    const fetchRecipes = async () => {
-        try {
-            const resp = await api.get('/recipes')
-            setRecipes(resp.data.data.recipes)
-        } catch {
-            toast.error('Failed to load recipes')
-        }
-    }
 
     const onAddMeal = (date: string, mealType: MealType) => {
         setSelectedSlot({ date, mealType })
@@ -81,20 +40,12 @@ const MealPlanner = () => {
 
         try {
             await api.delete(`/meal-plans/${mealId}`)
-            await fetchMealPlan()
+            await refetchMealPlan()
             toast.success('Meal removed')
         } catch {
             toast.error('Failed to remove meal')
         }
     }
-
-    useEffect(() => {
-        fetchRecipes()
-    }, [weekStart])
-
-    useEffect(() => {
-        fetchMealPlan()
-    }, [fetchMealPlan])
 
     if (loading) {
         return <Loading />
@@ -147,7 +98,7 @@ const MealPlanner = () => {
                         setSelectedSlot(null)
                     }}
                     onSuccess={() => {
-                        fetchMealPlan()
+                        refetchMealPlan()
                         setShowAddModal(false)
                         setSelectedSlot(null)
                     }}
