@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from 'react'
+import { useState, useEffect, useRef, type SubmitEvent } from 'react'
 import toast from 'react-hot-toast'
 import { ChefHat, X } from 'lucide-react'
 import { format } from 'date-fns'
@@ -25,6 +25,7 @@ const AddMealModal = ({
     const [selectedRecipe, setSelectedRecipe] = useState('')
     const [loading, setLoading] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
+    const searchRef = useRef<HTMLInputElement | null>(null)
 
     const filteredRecipes = recipes.filter((recipe) =>
         recipe.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -54,9 +55,36 @@ const AddMealModal = ({
         }
     }
 
+    useEffect(() => {
+        searchRef.current?.focus()
+    }, [])
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                onClose()
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+
+        return () => document.removeEventListener('keydown', handleKeyDown)
+    }, [onClose])
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden'
+        return () => {
+            document.body.style.overflow = 'unset'
+        }
+    }, [])
+
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl max-w-md w-full p-6">
+            <div
+                role="dialog"
+                aria-modal="true"
+                className="bg-white rounded-xl max-w-md w-full p-6"
+            >
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h2 className="text-xl font-bold text-gray-900">
@@ -67,10 +95,11 @@ const AddMealModal = ({
                         </p>
                     </div>
                     <button
+                        aria-label="Close"
                         onClick={onClose}
                         className="text-gray-400 hover:text-gray-600"
                     >
-                        <X className="w-6 h-6" />
+                        <X aria-hidden="true" className="w-6 h-6" />
                     </button>
                 </div>
 
@@ -78,6 +107,8 @@ const AddMealModal = ({
                     {/* Search */}
                     <div>
                         <input
+                            ref={searchRef}
+                            aria-label="Search recipes"
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -87,7 +118,8 @@ const AddMealModal = ({
                     </div>
 
                     {/* Recipe List */}
-                    <div className="max-h-64 overflow-y-auto space-y-2 custom-scrollbar">
+                    <fieldset className="max-h-64 overflow-y-auto space-y-2 custom-scrollbar">
+                        <legend className="sr-only">Choose a recipe</legend>
                         {filteredRecipes.length > 0 ? (
                             filteredRecipes.map((recipe) => (
                                 <label
@@ -121,14 +153,14 @@ const AddMealModal = ({
                                 </label>
                             ))
                         ) : (
-                            <div className="text-center py-8">
+                            <div role="status" className="text-center py-8">
                                 <ChefHat className="w-12 h-12 text-gray-300 mx-auto mb-2" />
                                 <p className="text-gray-500">
                                     No recipes found
                                 </p>
                             </div>
                         )}
-                    </div>
+                    </fieldset>
 
                     <div className="flex gap-3 pt-4">
                         <button
