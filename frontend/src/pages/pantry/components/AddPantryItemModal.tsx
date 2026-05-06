@@ -6,39 +6,42 @@ import api from '../../../services/api'
 
 import { CATEGORIES } from '../../../constants/pantry'
 
-import type { ShoppingListItem } from '../../../types'
-
-type AddItemModalProps = {
+type AddPantryItemModalProps = {
     onClose: () => void
-    onSuccess: (item: ShoppingListItem) => void
+    onSuccess: () => void
 }
 
-const AddItemModal = ({ onClose, onSuccess }: AddItemModalProps) => {
+const AddPantryItemModal = ({
+    onClose,
+    onSuccess,
+}: AddPantryItemModalProps) => {
     const [formData, setFormData] = useState({
-        ingredient_name: '',
+        name: '',
         quantity: '',
         unit: 'pieces',
         category: 'Other',
+        expiry_date: '',
+        is_running_low: false,
     })
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e: SubmitEvent) => {
         e.preventDefault()
 
-        setLoading(true)
-
         try {
-            const resp = await api.post('/shopping-list', {
+            await api.post('/pantry', {
                 ...formData,
-                quantity: Number(formData.quantity),
+                quantity: parseFloat(formData.quantity),
+                expiry_date: formData.expiry_date || null,
             })
 
-            toast.success('Item added to shopping list')
-            onSuccess(resp.data.data.item)
+            toast.success('Item added to pantry')
+            onSuccess()
             onClose()
         } catch (err) {
             console.error('Failed to add item: ', err)
-            toast.error('Failed to add item')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -47,7 +50,7 @@ const AddItemModal = ({ onClose, onSuccess }: AddItemModalProps) => {
             <div className="bg-white rounded-xl max-w-md w-full p-6">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-bold text-gray-900">
-                        Add Item
+                        Add Pantry Item
                     </h2>
                     <button
                         onClick={onClose}
@@ -60,15 +63,15 @@ const AddItemModal = ({ onClose, onSuccess }: AddItemModalProps) => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Item Name
+                            Name
                         </label>
                         <input
                             type="text"
-                            value={formData.ingredient_name}
+                            value={formData.name}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    ingredient_name: e.target.value,
+                                    name: e.target.value,
                                 })
                             }
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
@@ -144,6 +147,44 @@ const AddItemModal = ({ onClose, onSuccess }: AddItemModalProps) => {
                         </select>
                     </div>
 
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Expiry Date (Optional)
+                        </label>
+                        <input
+                            type="date"
+                            value={formData.expiry_date}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    expiry_date: e.target.value,
+                                })
+                            }
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            id="running-low"
+                            checked={formData.is_running_low}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    is_running_low: e.target.checked,
+                                })
+                            }
+                            className="w-4 h-4 text-emerald-500 border-gray-300 rounded focus:ring-emerald-500"
+                        />
+                        <label
+                            htmlFor="running-low"
+                            className="text-sm text-gray-700"
+                        >
+                            Mark as running low
+                        </label>
+                    </div>
+
                     <div className="flex gap-3 pt-4">
                         <button
                             type="button"
@@ -166,4 +207,4 @@ const AddItemModal = ({ onClose, onSuccess }: AddItemModalProps) => {
     )
 }
 
-export default AddItemModal
+export default AddPantryItemModal
