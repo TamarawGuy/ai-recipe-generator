@@ -79,11 +79,16 @@ const AddMealModal = ({
     }, [])
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            onClick={onClose}
+        >
             <div
                 role="dialog"
                 aria-modal="true"
+                aria-labelledby="Add Meal"
                 className="bg-white rounded-xl max-w-md w-full p-6"
+                onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between mb-6">
                     <div>
@@ -97,7 +102,7 @@ const AddMealModal = ({
                     <button
                         aria-label="Close"
                         onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600"
+                        className="text-gray-400 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1"
                     >
                         <X aria-hidden="true" className="w-6 h-6" />
                     </button>
@@ -166,14 +171,14 @@ const AddMealModal = ({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                            className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading || !selectedRecipe}
-                            className="flex-1 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                            className="flex-1 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1"
                         >
                             {loading ? 'Adding...' : 'Add Meal'}
                         </button>
