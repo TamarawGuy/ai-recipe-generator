@@ -31,7 +31,7 @@ const PantryItemCard = ({
                 </div>
                 <button
                     onClick={() => onDelete(item.id)}
-                    className="text-gray-400 hover:text-red-500 transition-colors"
+                    className="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
                 >
                     <X className="w-5 h-5" />
                 </button>

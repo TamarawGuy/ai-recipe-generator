@@ -279,7 +279,7 @@ const Settings = () => {
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
+                                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 cursor-pointer"
                             >
                                 <Save className="w-4 h-4" />
                                 {saving ? 'Saving...' : 'Save Profile'}
@@ -361,7 +361,7 @@ const Settings = () => {
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
+                                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 cursor-pointer"
                             >
                                 <Lock className="w-4 h-4" />
                                 {saving ? 'Changing...' : 'Change Password'}
@@ -392,7 +392,7 @@ const Settings = () => {
                                             onClick={() =>
                                                 toggleDietary(option)
                                             }
-                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                                                 preferences.dietary_restrictions.includes(
                                                     option,
                                                 )
@@ -441,7 +441,7 @@ const Settings = () => {
                                             onClick={() =>
                                                 toggleCuisine(cuisine)
                                             }
-                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                                                 preferences.preferred_cuisines.includes(
                                                     cuisine,
                                                 )
@@ -496,7 +496,7 @@ const Settings = () => {
                                                 measurement_unit: 'metric',
                                             })
                                         }
-                                        className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
+                                        className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
                                             preferences.measurement_unit ===
                                             'metric'
                                                 ? 'bg-emerald-500 text-white'
@@ -513,7 +513,7 @@ const Settings = () => {
                                                 measurement_unit: 'imperial',
                                             })
                                         }
-                                        className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
+                                        className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
                                             preferences.measurement_unit ===
                                             'imperial'
                                                 ? 'bg-emerald-500 text-white'
@@ -528,7 +528,7 @@ const Settings = () => {
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
+                                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 cursor-pointer"
                             >
                                 <Save className="w-4 h-4" />
                                 {saving ? 'Saving...' : 'Save Preferences'}
@@ -555,7 +555,7 @@ const Settings = () => {
 
                         <button
                             onClick={handleDeleteAccount}
-                            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer"
                         >
                             <Trash2 className="w-4 h-4" />
                             Delete Account

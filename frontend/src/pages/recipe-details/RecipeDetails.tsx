@@ -202,7 +202,7 @@ const RecipeDetails = () => {
                                                 Math.max(1, servings - 1),
                                             )
                                         }
-                                        className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors"
+                                        className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors cursor-pointer"
                                     >
                                         −
                                     </button>
@@ -213,7 +213,7 @@ const RecipeDetails = () => {
                                         onClick={() =>
                                             setServings(servings + 1)
                                         }
-                                        className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors"
+                                        className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors cursor-pointer"
                                     >
                                         +
                                     </button>

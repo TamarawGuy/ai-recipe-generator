@@ -81,7 +81,7 @@ const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
                     </Link>
                     <button
                         onClick={() => onDelete(recipe.id)}
-                        className="px-3 py-2 border border-gray-300 text-gray-700 hover:bg-red-50 hover:border-red-300 hover:text-red-600 rounded-lg transition-colors"
+                        className="px-3 py-2 border border-gray-300 text-gray-700 hover:bg-red-50 hover:border-red-300 hover:text-red-600 rounded-lg transition-colors cursor-pointer"
                     >
                         <Trash2 className="w-4 h-4" />
                     </button>
