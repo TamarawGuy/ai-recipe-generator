@@ -36,6 +36,13 @@ Create a `.env` file:
 VITE_API_URL=http://localhost:5000/api
 ```
 
+### Test Account
+
+To try the app without creating a new account, log in at `/login` with:
+
+- **Email:** `test@test.bg`
+- **Password:** `123456`
+
 ### Available Scripts
 
 | Command           | Description                         |
