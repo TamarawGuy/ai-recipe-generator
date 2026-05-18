@@ -93,7 +93,7 @@ const Navbar = () => {
                                 onClick={() =>
                                     setIsDropdownOpen(!isDropdownOpen)
                                 }
-                                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700"
+                                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 cursor-pointer"
                             >
                                 <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
                                     {user?.name?.charAt(0).toUpperCase() || 'U'}
@@ -132,7 +132,7 @@ const Navbar = () => {
                                     {/* Logout button */}
                                     <button
                                         onClick={handleLogout}
-                                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-500"
+                                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-500 cursor-pointer"
                                     >
                                         <LogOut className="w-4 h-4" />
                                         <span>Logout</span>

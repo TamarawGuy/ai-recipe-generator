@@ -18,19 +18,19 @@ const WeekNavigation = ({
             <button
                 onClick={onPrev}
                 className="
-                    px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 font-medium transition-colors"
+                    px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 font-medium transition-colors cursor-pointer"
             >
                 Previous Week
             </button>
             <button
                 onClick={onThisWeek}
-                className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 text-white rounded-lg font-medium transition-colors"
+                className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 text-white rounded-lg font-medium transition-colors cursor-pointer"
             >
                 This Week
             </button>
             <button
                 onClick={onNext}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 font-medium transition-colors"
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 font-medium transition-colors cursor-pointer"
             >
                 Next Week
             </button>

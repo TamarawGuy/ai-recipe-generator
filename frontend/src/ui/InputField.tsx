@@ -8,6 +8,7 @@ type InputFieldProps = {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
     placeholder?: string
     icon?: ReactNode
+    error?: string
 }
 
 const InputField = ({
@@ -18,7 +19,12 @@ const InputField = ({
     onChange,
     placeholder,
     icon,
+    error,
 }: InputFieldProps) => {
+    const borderClass = error
+        ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+        : 'border-gray-300 focus:ring-emerald-500 focus:border-emerald-500'
+
     return (
         <div>
             <label
@@ -41,10 +47,18 @@ const InputField = ({
                     value={value}
                     onChange={onChange}
                     placeholder={placeholder}
-                    className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                    className={`w-full pl-11 pr-4 py-2.5 border rounded-lg outline-none transition-all ${borderClass}`}
                     required
+                    aria-invalid={!!error}
+                    aria-describedby={error ? `${id}-error` : undefined}
                 />
             </div>
+
+            {error && (
+                <p id={`${id}-error`} className="mt-1 text-sm text-red-500">
+                    {error}
+                </p>
+            )}
         </div>
     )
 }

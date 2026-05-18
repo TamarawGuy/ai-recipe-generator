@@ -228,7 +228,7 @@ const RecipeGenerator = () => {
                                 />
                                 <button
                                     onClick={addIngredient}
-                                    className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                                    className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors cursor-pointer"
                                 >
                                     <Plus className="w-5 h-5" />
                                 </button>
@@ -295,7 +295,7 @@ const RecipeGenerator = () => {
                                             onClick={() =>
                                                 toggleDietary(option)
                                             }
-                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                                                 dietaryRestrictions.includes(
                                                     option,
                                                 )
@@ -342,7 +342,7 @@ const RecipeGenerator = () => {
                                             onClick={() =>
                                                 setCookingTime(time.value)
                                             }
-                                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                                                 cookingTime === time.value
                                                     ? 'bg-emerald-500 text-white'
                                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -359,7 +359,7 @@ const RecipeGenerator = () => {
                         <button
                             onClick={handleGenerate}
                             disabled={generating}
-                            className="w-full bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold py-4 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold py-4 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                         >
                             {generating ? (
                                 <>

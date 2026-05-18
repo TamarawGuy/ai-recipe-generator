@@ -48,7 +48,7 @@ const ShoppingListItemComp = ({
 
             <button
                 onClick={() => onDelete(item.id)}
-                className="shrink-0 p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                className="shrink-0 p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
             >
                 <X className="w-5 h-5" />
             </button>

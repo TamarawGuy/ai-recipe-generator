@@ -6,6 +6,19 @@ import { useAuth } from '../../context/AuthContext'
 import Logo from '../../shared/Logo'
 import InputField from '../../ui/InputField'
 
+const validatePassword = (password: string): string | undefined => {
+    if (password.length < 6) {
+        return 'Password must be at least 6 characters'
+    }
+    if (!/[A-Z]/.test(password)) {
+        return 'Password must contain an uppercase letter'
+    }
+    if (!/[^A-Za-z0-9]/.test(password)) {
+        return 'Password must contain a special character'
+    }
+    return undefined
+}
+
 const SignUp = () => {
     const { register } = useAuth()
     const navigate = useNavigate()
@@ -13,9 +26,18 @@ const SignUp = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
+    const [errors, setErrors] = useState<{ password?: string }>({})
 
-    const handleSubmit = async (e: SubmitEvent) => {
+    const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        const passwordError = validatePassword(password)
+        if (passwordError) {
+            setErrors({ password: passwordError })
+            return
+        }
+        setErrors({})
+
         setLoading(true)
 
         const res = await register(name, email, password)
@@ -73,6 +95,7 @@ const SignUp = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="********"
                             icon={<Lock className="w-5 h-5" />}
+                            error={errors.password}
                         />
 
                         {/* Submit Button */}
