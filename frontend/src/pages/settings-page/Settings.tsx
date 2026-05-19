@@ -1,4 +1,4 @@
-import { useState, useEffect, type SubmitEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { User, Lock, Trash2, Save } from 'lucide-react'
 import Navbar from '../../shared/Navbar'
 import { useAuth } from '../../context/AuthContext'
@@ -6,6 +6,8 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../shared/Loading'
 import api from '../../services/api'
+import Header from '../../shared/Header'
+import { useUserData } from './hooks/useUserData'
 
 const DIETARY_OPTIONS = [
     'Vegetarian',
@@ -28,34 +30,12 @@ const CUISINES = [
     'American',
 ]
 
-type Preferences = {
-    dietary_restrictions: string[]
-    allergies: string[]
-    preferred_cuisines: string[]
-    default_servings: number
-    measurement_unit: 'metric' | 'imperial'
-}
-
 const Settings = () => {
     const { user, logout } = useAuth()
     const navigate = useNavigate()
+    const { profile, setProfile, preferences, setPreferences, loading } =
+        useUserData()
     const [saving, setSaving] = useState(false)
-    const [loading, setLoading] = useState(true)
-
-    // Profile state
-    const [profile, setProfile] = useState({
-        name: '',
-        email: '',
-    })
-
-    // Preferences state
-    const [preferences, setPreferences] = useState<Preferences>({
-        dietary_restrictions: [],
-        allergies: [],
-        preferred_cuisines: [],
-        default_servings: 4,
-        measurement_unit: 'metric',
-    })
 
     // Password state
     const [passwordData, setPasswordData] = useState({
@@ -63,37 +43,6 @@ const Settings = () => {
         newPassword: '',
         confirmPassword: '',
     })
-
-    useEffect(() => {
-        fetchUserData()
-    }, [])
-
-    const fetchUserData = async () => {
-        try {
-            const resp = await api.get('/users/profile')
-            const { user, preferences: userPrefs } = resp.data.data
-
-            setProfile({
-                name: user.name,
-                email: user.email,
-            })
-
-            if (userPrefs) {
-                setPreferences({
-                    dietary_restrictions: userPrefs.dietary_restrictions || [],
-                    allergies: userPrefs.allergies || [],
-                    preferred_cuisines: userPrefs.preferred_cuisines || [],
-                    default_servings: userPrefs.default_servings || 4,
-                    measurement_unit: userPrefs.measurement_unit || 'metric',
-                })
-            }
-        } catch (err) {
-            console.error('Failed to load user data: ', err)
-            toast.error('Failed to load user data')
-        } finally {
-            setLoading(false)
-        }
-    }
 
     const handleProfileUpdate = async (e: SubmitEvent) => {
         e.preventDefault()
@@ -219,14 +168,10 @@ const Settings = () => {
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">
-                        Settings
-                    </h1>
-                    <p className="text-gray-600 mt-1">
-                        Manage your account and preferences
-                    </p>
-                </div>
+                <Header
+                    title="Settings"
+                    subtitle="Manage your account and preferences"
+                />
 
                 <div className="space-y-6">
                     {/* Profile Section */}
@@ -251,7 +196,12 @@ const Settings = () => {
                                 <input
                                     type="text"
                                     value={profile.name}
-                                    // onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                                    onChange={(e) =>
+                                        setProfile({
+                                            ...profile,
+                                            name: e.target.value,
+                                        })
+                                    }
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                                     required
                                 />
