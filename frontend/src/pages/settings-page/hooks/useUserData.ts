@@ -2,14 +2,9 @@ import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import api from '../../../services/api'
+import type { UserPreferences } from '../../../types'
 
-type Preferences = {
-    dietary_restrictions: string[]
-    allergies: string[]
-    preferred_cuisines: string[]
-    default_servings: number
-    measurement_unit: 'metric' | 'imperial'
-}
+type Preferences = Omit<UserPreferences, 'id' | 'user_id'>
 
 export const useUserData = () => {
     const [profile, setProfile] = useState({
@@ -25,7 +20,7 @@ export const useUserData = () => {
         measurement_unit: 'metric',
     })
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const fetchUserData = async () => {
         try {
@@ -58,5 +53,5 @@ export const useUserData = () => {
         fetchUserData()
     }, [])
 
-    return { profile, setProfile, preferences, setPreferences, loading }
+    return { profile, preferences, loading }
 }
