@@ -4,11 +4,11 @@ import { ChefHat, UtensilsCrossed, Calendar, Clock } from 'lucide-react'
 
 import Navbar from '../../shared/Navbar'
 import StatCard from './components/StatCard'
-import Header from './components/Header'
 import Loading from '../../shared/Loading'
 import api from '../../services/api'
 
 import type { Recipe, UpcomingMeal } from '../../types.d'
+import Header from '../../shared/Header'
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
@@ -58,7 +58,10 @@ const Dashboard = () => {
             <Navbar />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
-                <Header />
+                <Header
+                    title="Dashboard"
+                    subtitle="Welcome back! Here's your cooking overview"
+                />
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
