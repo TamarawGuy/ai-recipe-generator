@@ -1,5 +1,6 @@
 import Recipe from '../models/Recipe.js'
 import PantryItem from '../models/PantryItem.js'
+import { generateRecipe } from './gemini.js'
 
 const getRecipesDeclaration = {
     name: 'get_recipes',
@@ -102,12 +103,80 @@ const getExpiringItemsDeclaration = {
     },
 }
 
+const generateRecipeDeclaration = {
+    name: 'generate_recipe',
+    description:
+        'Generate a brand new recipe using AI from a list of ingredients and preferences. This does NOT save the recipe. After calling this, you must show a summary to the user and ask if they want to save it. Only call save_recipe afterward if the user confirms.',
+    parameters: {
+        type: 'object',
+        properties: {
+            ingredients: {
+                type: 'array',
+                items: { type: 'string' },
+                description:
+                    'Ingredients the user wants in the recipe, e.g. ["chicken", "garlic", "lemon"].',
+            },
+            cuisine_type: {
+                type: 'string',
+                enum: [
+                    'Italian',
+                    'Mexican',
+                    'Indian',
+                    'Chinese',
+                    'Japanese',
+                    'Thai',
+                    'French',
+                    'Mediterranean',
+                    'American',
+                ],
+                description: 'Optional cuisine type for the recipe.',
+            },
+            dietary_restrictions: {
+                type: 'array',
+                items: { type: 'string' },
+                description:
+                    'Optional dietary restrictions, e.g. ["vegetarian", "gluten-free"].',
+            },
+            servings: {
+                type: 'integer',
+                description: 'Number of servings. Defaults to 4.',
+            },
+            cooking_time: {
+                type: 'string',
+                enum: ['quick', 'medium', 'long'],
+                description:
+                    'Time budget: quick=<30min, medium=30-60min, long=>60min. Defaults to medium.',
+            },
+        },
+        required: ['ingredients'],
+    },
+}
+
+const saveRecipeDeclaration = {
+    name: 'save_recipe',
+    description:
+        "Save a previously-generated recipe to the user's recipe collection. ONLY call this AFTER the user has explicitly confirmed they want to save the recipe. Pass the exact recipe object returned by generate_recipe.",
+    parameters: {
+        type: 'object',
+        properties: {
+            recipe: {
+                type: 'object',
+                description:
+                    'The full recipe returned by generate_recipe. Pass it through unchanged.',
+            },
+        },
+        required: ['recipe'],
+    },
+}
+
 export const tools = [
     {
         functionDeclarations: [
             getRecipesDeclaration,
             getPantryItemsDeclaration,
             getExpiringItemsDeclaration,
+            generateRecipeDeclaration,
+            saveRecipeDeclaration,
         ],
     },
 ]
@@ -154,6 +223,40 @@ export const runTool = async (name, args, userId) => {
             quantity: i.quantity,
             unit: i.unit,
         }))
+    }
+
+    if (name === 'generate_recipe') {
+        const raw = await generateRecipe({
+            ingredients: args.ingredients,
+            dietaryRestrictions: args.dietary_restrictions,
+            cuisineType: args.cuisine_type ?? 'any',
+            servings: args.servings ?? 4,
+            cookingTime: args.cooking_time ?? 'medium',
+        })
+
+        return {
+            name: raw.name,
+            description: raw.description,
+            cuisine_type: raw.cuisineType,
+            difficulty: raw.difficulty,
+            prep_time: raw.prepTime,
+            cook_time: raw.cookTime,
+            servings: raw.servings,
+            ingredients: raw.ingredients,
+            instructions: raw.instructions,
+            dietary_tags: raw.dietaryTags,
+            nutrition: raw.nutrition,
+        }
+    }
+
+    if (name === 'save_recipe') {
+        const saved = await Recipe.create(userId, args.recipe)
+
+        return {
+            id: saved.id,
+            name: saved.name,
+            saved: true,
+        }
     }
 
     throw new Error(`Unknown tool: ${name}`)
