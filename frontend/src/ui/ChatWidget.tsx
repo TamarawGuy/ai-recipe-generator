@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect, type SubmitEvent } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MessageCircle, X, Send } from 'lucide-react'
+
 import { useAuth } from '../context/AuthContext'
+
+import api from '../services/api'
 
 type Message = {
     id: string
@@ -41,9 +44,10 @@ const ChatWidget = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState<Message[]>([])
     const [input, setInput] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const messageEndRef = useRef<HTMLDivElement>(null)
 
-    const handleSend = (e: SubmitEvent) => {
+    const handleSend = async (e: SubmitEvent) => {
         e.preventDefault()
 
         const text = input.trim()
@@ -56,18 +60,42 @@ const ChatWidget = () => {
             createdAt: new Date().toISOString(),
         }
 
+        const historyToSend = messages.map((msg) => ({
+            role: msg.role,
+            text: msg.text,
+        }))
+
         setMessages((prev) => [...prev, userMessage])
         setInput('')
+        setIsLoading(true)
 
-        setTimeout(() => {
+        try {
+            const response = await api.post('/chat', {
+                history: historyToSend,
+                newMessage: text,
+            })
+
             const reply: Message = {
                 id: crypto.randomUUID(),
                 role: 'assistant',
-                text: `You said "${text}".`,
+                text: response.data.data.reply,
                 createdAt: new Date().toISOString(),
             }
+
             setMessages((prev) => [...prev, reply])
-        }, 500)
+        } catch (err) {
+            console.error('Chat error: ', err)
+            const errorMsg: Message = {
+                id: crypto.randomUUID(),
+                role: 'assistant',
+                text: 'Sorry, something went wrong. Please try again.',
+                createdAt: new Date().toISOString(),
+            }
+
+            setMessages((prev) => [...prev, errorMsg])
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -117,6 +145,17 @@ const ChatWidget = () => {
                 {messages.map((msg) => (
                     <MessageRow key={msg.id} message={msg} />
                 ))}
+                {isLoading && (
+                    <div className="flex justify-start">
+                        <div className="bg-white border border-gray-200 text-gray-400 text-sm rounded-2xl rounded-bl-sm px-3 py-2">
+                            <span className="inline-flex gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:150ms]" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:300ms]" />
+                            </span>
+                        </div>
+                    </div>
+                )}
                 <div ref={messageEndRef} />
             </div>
 
@@ -130,13 +169,14 @@ const ChatWidget = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message..."
+                    disabled={isLoading}
                     className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
                 />
 
                 <button
                     type="submit"
                     aria-label="Send"
-                    disabled={!input.trim()}
+                    disabled={!input.trim() || isLoading}
                     className="p-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white disabled:bg-gray-300 disabled: cursor-not-allowed transition-colors"
                 >
                     <Send className="w-5 h-5" />
