@@ -19,6 +19,7 @@ import MealPlanner from './pages/meal-planner/MealPlanner'
 import Pantry from './pages/pantry/Pantry'
 import RecipeGenerator from './pages/recipe-generator/RecipeGenerator'
 import ShoppingList from './pages/shopping-list/ShoppingList'
+import ChatWidget from './ui/ChatWidget'
 
 function App() {
     return (
@@ -101,6 +102,7 @@ function App() {
                         element={<Navigate to="/dashboard" replace />}
                     />
                 </Routes>
+                <ChatWidget />
             </Router>
 
             {/* Toast */}
