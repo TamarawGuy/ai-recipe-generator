@@ -111,7 +111,7 @@ const ChatWidget = () => {
             <button
                 aria-label="Open Chat"
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg flex items-center justify-center transition-colors"
+                className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg flex items-center justify-center transition-colors cursor-pointer"
             >
                 <MessageCircle className="w-6 h-6" />
             </button>
@@ -129,7 +129,7 @@ const ChatWidget = () => {
                 <button
                     aria-label="Close chat"
                     onClick={() => setIsOpen(false)}
-                    className="p-1 hover:bg-emerald-600 rounded transition-colors"
+                    className="p-1 hover:bg-emerald-600 rounded transition-colors cursor-pointer"
                 >
                     <X className="w-5 h-5" />
                 </button>
@@ -177,7 +177,7 @@ const ChatWidget = () => {
                     type="submit"
                     aria-label="Send"
                     disabled={!input.trim() || isLoading}
-                    className="p-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white disabled:bg-gray-300 disabled: cursor-not-allowed transition-colors"
+                    className="p-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                 >
                     <Send className="w-5 h-5" />
                 </button>

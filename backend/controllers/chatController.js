@@ -9,13 +9,13 @@ const MAX_ITERATIONS = 5
 const SYSTEM_INSTRUCTION = `You are a helpful cooking assistant inside a recipe app. The user has saved recipes, a pantry, and a meal plan. Use the 
   available tools to answer questions about their data. Keep replies concise and friendly. If the user asks something unrelated to cooking, recipes, or 
   food, answer briefly without using any tool.
+
   Recipe creation protocol — follow this exactly:
   1. When the user asks to generate or create a recipe, call generate_recipe with their requirements.
-  2. Present a short summary in chat: the recipe name, total time, and 3-5 key ingredients. Do NOT dump the full recipe; the user can see it later.
+  2. The response will include a short summary of the recipe. Present the name, total time, and a few key details in chat. Do NOT show ingredients or instructions yet.
   3. Ask the user if they want to save it.
-  4. ONLY call save_recipe AFTER the user explicitly confirms (e.g., "yes", "save it", "sure"). Pass the exact recipe object returned by generate_recipe
-   — do not modify its fields.
-  5. If they decline or ask for changes, generate a new one with their adjustments. Do not save without confirmation.`
+  4. ONLY call save_recipe AFTER the user explicitly confirms (e.g., "yes", "save it", "sure"). save_recipe takes no arguments — calling it saves whichever recipe was most recently generated.
+  5. If the user declines or asks for changes, call generate_recipe again with the adjustments. The new generation automatically replaces the previous one as the pending recipe.`
 
 /**
  * POST /api/chat
